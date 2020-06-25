@@ -65,10 +65,9 @@ class Router
                 $pseudo = $_POST['pseudo'];
                 $password = $_POST['pass'];
                 $passwordConfirmation = $_POST['pass2'];
-                /* PAAAAAAAS MVC !!!! */
-                if ($password == $passwordConfirmation && $login !== "" && $pseudo !== "" && $password !== "" && $passwordConfirmation !== "") 
+                $newUser = $userController->createNewUser($login, $pseudo, $password, $passwordConfirmation);
+                if ($newUser) 
                 {
-                    $newUser = $userController->createNewUser($login, $pseudo, $password);
                     $ViewController->render(['registrationSucessView', 'loginView'], ['title' => 'Inscription réussie']);
                 }
                 else

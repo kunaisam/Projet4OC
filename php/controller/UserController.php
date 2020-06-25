@@ -37,21 +37,27 @@ class UserController
 	 * @param String $pseudo contient la valeur entrée par l'utilisateur dans la partie Pseudonyme du fomulaire d'inscription
      * @param String $password contient la valeur entrée par l'utilisateur dans la partie Mot de passe du fomulaire d'inscription
 	 */
-	public function createNewUser($login, $pseudo, $password)
+	public function createNewUser($login, $pseudo, $password, $passwordConfirmation)
 	{
-		// Création d'un objet User avec ses données dans un tableau
-		$user = new User([
-			'login' => $login,
-            'username' => $pseudo, 
-            'password' => $password,
-            'profile' => 2
-		]);
+		// Vérifie si le formulaire d'inscription a été correctement rempli
+		if ($password == $passwordConfirmation && $login !== "" && $pseudo !== "" && $password !== "" && $passwordConfirmation !== "") {
+			// Création d'un objet User avec ses données dans un tableau
+			$user = new User([
+				'login' => $login,
+	            'username' => $pseudo, 
+	            'password' => $password,
+	            'profile' => 2
+			]);
 
-		// Création d'un objet UserManager
-		$userManager = new UserManager();
-		// Création d'un nouvel utilisateur avec la méthode createNewUser du Usermanager et l'objet User en paramètres
-		$newUser = $userManager->createNewUser($user);
+			// Création d'un objet UserManager
+			$userManager = new UserManager();
+			// Création d'un nouvel utilisateur avec la méthode createNewUser du Usermanager et l'objet User en paramètres
+			$newUser = $userManager->createNewUser($user);
 
-		return $newUser;
+			return $newUser;
+		}
+		else {
+			return NULL;
+		}
 	}
 }

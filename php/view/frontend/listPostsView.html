@@ -1,24 +1,38 @@
 <section>
 	<div id="block_articles">
-		<?php
-		while ($data = $posts->fetch())
-		{
-		?>
-		    <a href="?<?= TAG_ACTION ?>=<?= ACTION_POST ?>&<?= TAG_IDPOST ?>=<?= $data['id'] ?>" class="article">
+
+		    <a href="?<?= TAG_ACTION ?>=<?= ACTION_POST ?>&<?= TAG_IDPOST ?>=<?= $posts->getId() ?>" class="article">
 		        <div>
-		            <span class="title_list_post"><?= htmlspecialchars($data['title']) ?></span>
-		            <em>le <?= $data['date'] ?></em>
+		            <span class="title_list_post"><?= $posts->getTitle() ?></span>
+		            <em>le <?= $posts->getDate() ?></em>
 		        </div>
 		                
 		        <div>
 		        	<p class="content_list_post_view">
-		            	<?= nl2br(htmlspecialchars($data['content'])) ?>
+		            	<?= $posts->getContent() ?>
 		            </p>
 		        </div>
 		    </a>
+
+	</div>
+</section>
+
+<!--
+		<?php
+		while ($data = $posts->fetch())
+		{
+		?>
+
+		<?= $data['id'] ?>
+
+		<?= htmlspecialchars($data['title']) ?>
+		<?= $data['date'] ?>
+		<?= nl2br(htmlspecialchars($data['content'])) ?>
+
 		<?php
 		}
 		$posts->closeCursor();
 		?>
-	</div>
-</section>
+PostManager : Faire une boucle Foreach pour créer toutes les instances de classe et les mettre dans un tableau
+listPostsView : Faire une boucle pour créer un article par instance à partir du tableau
+-->

@@ -21,8 +21,14 @@ class PostManager extends Manager
     {
         $db = $this->dbConnect();
         $req = $db->query('SELECT * FROM article ORDER BY id DESC LIMIT 0, 3');
+                // PDO::FETCH_ASSOC renvoie les valeurs sous forme d'un tableau associatif.
+        $result_array = $req->fetchAll(PDO::FETCH_ASSOC);
+        // Renvoie les données de l'utilisateur sélectionné dans la variable $userData
+        $articleData = $result_array[0];
+        // Création d'un objet de la classe User avec les valeurs contenues dans $userData
+        $article = new Article($articleData);
 
-        return $req;
+        return $article;
     }
 
     public function getPost($postId)

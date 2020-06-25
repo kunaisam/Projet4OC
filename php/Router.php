@@ -109,10 +109,12 @@ class Router
             case ACTION_LOGOUT:
                 $_SESSION = array();
                 session_destroy();
+                /* REMETTRE DE L'ORDRE DANS CETTE PARTIE $posts */
                 $posts = $controller->indexListPosts();
                 $ViewController->render(['indexView', 'listPostsView'], ['posts' => $posts, 'title' => 'Blog de Jean Forteroche']);
                 break;
             default :
+                /* REMETTRE DE L'ORDRE DANS CETTE PARTIE $posts */
                 $posts = $controller->indexListPosts();
                 $ViewController->render(['indexView', 'listPostsView'], ['posts' => $posts, 'title' => 'Blog de Jean Forteroche']);
         }

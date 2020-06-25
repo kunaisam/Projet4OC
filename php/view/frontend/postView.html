@@ -1,0 +1,35 @@
+<section>
+	<div class="single_article">
+		<?php
+		while ($data = $post->fetch())
+		{
+		?>
+		<div>
+		    <h3 class="title_list_post"><?= htmlspecialchars($data['title']) ?></h3>
+		    <em>le <?= $data['date'] ?></em>
+		</div>
+		                
+		<div>
+		 	<p class="single_content_list_post_view">
+		     	<?= nl2br(htmlspecialchars($data['content'])) ?>
+		    </p>
+		<?php
+		}
+		$post->closeCursor();
+		?>  
+		</div>
+	</div>
+	<div class="comments_box">
+		<h4>Commentaires</h4>
+		<?php
+		while ($comment = $comments->fetch())
+		{
+		?>
+			<p><strong><?= htmlspecialchars($comment['username']) ?></strong> le <?= $comment['date'] ?></p>
+           	<p><?= nl2br(htmlspecialchars($comment['content'])) ?></p>
+	    <?php
+	    }
+	    $comments->closeCursor();
+	    ?>
+	</div>
+</section>

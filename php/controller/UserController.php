@@ -1,0 +1,57 @@
+<?php
+
+/**
+ * Fichier contenant le contrôleur des utilisateurs de l'application
+ * @author Samy Jebbari Godinho
+ * @version 1.0
+ * date : 24.06.2020
+ */
+
+/**
+ * Classe UserController
+ *
+ * Classe contenant le contrôleur des utilisateurs de l'application
+ */
+class UserController
+{
+	/**
+	 * Méthode permettant d'appeler un utilisateur via la classe UserManager
+	 *
+	 * @param String $login contient la valeur entrée par l'utilisateur dans la partie Identifiant du fomulaire de connexion
+     * @param String $password contient la valeur entrée par l'utilisateur dans la partie Mot de passe du fomulaire de connexion
+	 */
+	public function getUser($login, $password)
+	{
+		// Création de l'objet UserManager dans la variable $userManager
+		$userManager = new UserManager();
+		// Appel de l'utilisateur via la méthode getUser de $userManager dans la variable $user
+		$user = $userManager->getUser($login, $password);
+
+		return $user;
+	}
+
+	/**
+	 * Méthode permettant de créer un utilisateur via la classe User
+	 *
+	 * @param String $login contient la valeur entrée par l'utilisateur dans la partie Identifiant du fomulaire d'inscription
+	 * @param String $pseudo contient la valeur entrée par l'utilisateur dans la partie Pseudonyme du fomulaire d'inscription
+     * @param String $password contient la valeur entrée par l'utilisateur dans la partie Mot de passe du fomulaire d'inscription
+	 */
+	public function createNewUser($login, $pseudo, $password)
+	{
+		// Création d'un objet User avec ses données dans un tableau
+		$user = new User([
+			'login' => $login,
+            'username' => $pseudo, 
+            'password' => $password,
+            'profile' => 2
+		]);
+
+		// Création d'un objet UserManager
+		$userManager = new UserManager();
+		// Création d'un nouvel utilisateur avec la méthode createNewUser du Usermanager et l'objet User en paramètres
+		$newUser = $userManager->createNewUser($user);
+
+		return $newUser;
+	}
+}

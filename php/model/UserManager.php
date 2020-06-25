@@ -69,7 +69,6 @@ class UserManager extends Manager
             $req->bindParam('password', $password, PDO::PARAM_STR);
             $req->bindParam('profile_id', $profile_id, PDO::PARAM_INT);
             $res = $req->execute();
-            die();
         }
         catch (Exception $e) {
             die($e);

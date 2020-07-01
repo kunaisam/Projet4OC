@@ -1,22 +1,16 @@
 <section>
 	<div class="single_article">
-		<?php
-		while ($data = $post->fetch())
-		{
-		?>
+
 		<div>
-		    <h3 class="title_list_post"><?= htmlspecialchars($data['title']) ?></h3>
-		    <em>le <?= $data['date'] ?></em>
+		    <h3 class="title_list_post"><?= $post->getTitle() ?></h3>
+		    <em>le <?= $post->getDate() ?></em>
 		</div>
 		                
 		<div>
 		 	<p class="single_content_list_post_view">
-		     	<?= nl2br(htmlspecialchars($data['content'])) ?>
+		     	<?= $post->getContent() ?>
 		    </p>
-		<?php
-		}
-		$post->closeCursor();
-		?>  
+
 		</div>
 	</div>
 	<div class="comments_box">

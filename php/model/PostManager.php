@@ -61,9 +61,20 @@ class PostManager extends Manager
     {
         $db = $this->dbConnect();
         $req = $db->prepare('SELECT * FROM article WHERE id = ?');
+        // Envoi du paramètre $postId à la requête pour sélectionner le bon article
         $req->execute(array($postId));
+        // PDO::FETCH_ASSOC renvoie les valeurs sous forme d'un tableau associatif.
+        $result_array = $req->fetchAll(PDO::FETCH_ASSOC);
+        // Vérifie si la variable $result_array est vide
+        if (empty($result_array)) {
+            return null;
+        }
+        // Renvoie les données de l'article sélectionné dans la variable $articleData
+        $articleData = $result_array[0];
+        // Création d'une instance de la classe Article avec les valeurs contenues dans $articleData
+        $article = new Article($articleData);
 
-        return $req;
+        return $article;
     }
 
     public function getComments($postId)

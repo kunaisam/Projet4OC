@@ -36,6 +36,7 @@ class Router
             case ACTION_POST :
                 $idPost = isset($_POST[TAG_IDPOST]) ? $_POST[TAG_IDPOST] : (isset($_GET[TAG_IDPOST]) ? $_GET[TAG_IDPOST] : null);
                 if (!empty($idPost)) {
+                    /* PLOOOOOOOOOOOOOOOOOOOOOOOPPPPPPPPPPPPPPPPPP */
                     $post = $controller->post($idPost);
                     $comments = $controller->comments($idPost);
                     if (isset($_SESSION['username'])) {

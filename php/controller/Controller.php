@@ -14,14 +14,6 @@
  */
 class Controller
 {
-	public function articleListPosts()
-	{
-	    $postManager = new PostManager(); // Création d'un objet
-	    $posts = $postManager->getPosts(); // Appel d'une fonction de cet objet
-
-	    return $posts;
-	}
-
 	public function comments($id)
 	{
 		$postManager = new PostManager();

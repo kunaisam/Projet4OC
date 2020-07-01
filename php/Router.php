@@ -29,8 +29,14 @@ class Router
         session_start();
 
         switch ($action) {
+            /**
+             * Action enclenchée lorsqu'on clique sur la section Articles
+             *
+             */
             case ACTION_LISTPOSTS :
-                $posts = $controller->articleListPosts();
+                // Création des instances de chaque article
+                $posts = $postController->articleListPosts();
+                // Affichage de la liste des articles
                 $ViewController->render(['listPostsView'], ['posts' => $posts, 'title' => 'Articles']);
                 break;
 
@@ -44,7 +50,6 @@ class Router
                 // Vérifie si $idPost contient une valeur
                 if (!empty($idPost)) {
                     // Création de l'objet Post dans la variable $post
-                    /* PLOOOOOOOOOOOOOOOOOOOOOOOPPPPPPPPPPPPPPPPPP */
                     $post = $postController->post($idPost);
                     // Création d'objets Comment dans la variable $comments
                     $comments = $controller->comments($idPost);
@@ -119,14 +124,29 @@ class Router
                     $ViewController->render(['connexionFailureView', 'loginView'], ['title' => 'Connexion']);
                 }
                 break;
+
+            /**
+             * Action enclenchée lors d'une déconnexion utilisateur
+             *
+             */
             case ACTION_LOGOUT:
+                // Destruction de la session
                 $_SESSION = array();
                 session_destroy();
+                // Récupération du contenu des articles de blog dans la variable $posts pour pouvoir les afficher sur la page d'accueil
                 $posts = $postController->indexListPosts();
+                // Affichage des vues après déconnexion
                 $ViewController->render(['indexView', 'listPostsView'], ['posts' => $posts, 'title' => 'Blog de Jean Forteroche']);
                 break;
+
+            /**
+             * Pas d'action, Accueil
+             *
+             */
             default :
+                // Récupération du contenu des articles de blog dans la variable $posts pour pouvoir les afficher sur la page d'accueil
                 $posts = $postController->indexListPosts();
+                // Affichage des vues
                 $ViewController->render(['indexView', 'listPostsView'], ['posts' => $posts, 'title' => 'Blog de Jean Forteroche']);
         }
     }

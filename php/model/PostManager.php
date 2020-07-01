@@ -21,10 +21,30 @@ class PostManager extends Manager
      */
     public function getPosts()
     {
+        // Connexion à la base de données
         $db = $this->dbConnect();
+        // Requête SQL pour récupérer toutes les données des articles
         $req = $db->query('SELECT * FROM article');
 
-        return $req;
+        // Contiendra toutes les instances d'articles dans un tableau
+        $listPosts = array();
+        // PDO::FETCH_ASSOC renvoie les valeurs sous forme d'un tableau associatif.
+        while ($result_array = $req->fetchAll(PDO::FETCH_ASSOC)) {
+            // renvoie la clé correspondante à l'id de l'article
+            $result_array_id = array_search('id', $result_array);
+            // Liste chaque article en fonction de son id
+            foreach ($result_array as $result_array_id => $value) {
+                // Renvoie les données de l'article sélectionné dans la variable $articleData
+                $articleData = $result_array[$result_array_id];
+                // Création d'une instance de la classe Article avec les valeurs contenues dans $articleData
+                $article = new Article($articleData);
+                // Retourne la nouvelle instance $article dans le tableau $listposts.
+                array_push($listPosts, $article);
+            }
+        }
+        $req->closeCursor();
+
+        return $listPosts;
     }
 
     /**

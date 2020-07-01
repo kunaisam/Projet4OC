@@ -14,19 +14,5 @@
  */
 class Controller
 {
-	public function comments($id)
-	{
-		$postManager = new PostManager();
-		$comments = $postManager->getComments($id);
 
-		return $comments;
-	}
-
-	public function addComment($postId, $userId, $comment)
-	{
-		$postManager = new PostManager();
-		$comment = $postManager->postComment($postId, $userId, $comment);
-
-		return $comment;
-	}
 }

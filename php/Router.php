@@ -26,6 +26,7 @@ class Router
         $formController = new FormController();
         $userController = new UserController();
         $postController = new PostController();
+        $commentController = new CommentController();
         session_start();
 
         switch ($action) {
@@ -52,7 +53,7 @@ class Router
                     // Création de l'objet Post dans la variable $post
                     $post = $postController->post($idPost);
                     // Création d'objets Comment dans la variable $comments
-                    $comments = $controller->comments($idPost);
+                    $comments = $commentController->comments($idPost);
                     // Vérifie si une session est active
                     if (isset($_SESSION['username'])) {
                         // Affiche le post, ses commentaires et si la session est active, affiche la possibilité d'ajouter un commentaire

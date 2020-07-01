@@ -16,14 +16,13 @@
 	<div class="comments_box">
 		<h4>Commentaires</h4>
 		<?php
-		while ($comment = $comments->fetch())
+		foreach($comments as $comment)
 		{
 		?>
-			<p><strong><?= htmlspecialchars($comment['username']) ?></strong> le <?= $comment['date'] ?></p>
-           	<p><?= nl2br(htmlspecialchars($comment['content'])) ?></p>
+			<p><strong><?= $comment->getUser() ?></strong> le <?= $comment->getDate() ?></p>
+           	<p><?= $comment->getContent() ?></p>
 	    <?php
 	    }
-	    $comments->closeCursor();
 	    ?>
 	</div>
 </section>

@@ -69,7 +69,7 @@ class Router
                 break;
             case ACTION_ADDCOMMENT:
                 $comment = $_POST['comment'];
-                if ($comment !== "") {
+                if (!empty($comment)) {
                     $idPost = isset($_POST[TAG_IDPOST]) ? $_POST[TAG_IDPOST] : (isset($_GET[TAG_IDPOST]) ? $_GET[TAG_IDPOST] : null);
                 }
                 else {

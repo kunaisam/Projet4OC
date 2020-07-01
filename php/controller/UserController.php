@@ -40,7 +40,7 @@ class UserController
 	public function createNewUser($login, $pseudo, $password, $passwordConfirmation)
 	{
 		// Vérifie si le formulaire d'inscription a été correctement rempli
-		if ($password == $passwordConfirmation && $login !== "" && $pseudo !== "" && $password !== "" && $passwordConfirmation !== "") {
+		if (strcmp($password, $passwordConfirmation) == 0 && !empty($login) && !empty($pseudo) && !empty($password) && !empty($passwordConfirmation)) {
 			// Création d'un objet User avec ses données dans un tableau
 			$user = new User([
 				'login' => $login,

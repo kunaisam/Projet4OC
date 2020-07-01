@@ -80,7 +80,7 @@ class PostManager extends Manager
     /**
      * Méthode permettant d'appeler l'article de blog sélectionné dans la base de données et d'incorporer ses valeurs dans une instance de la classe Article
      *
-     * @param Integer $postId contient l'identifiant du post sélectionné en page d'accueil
+     * @param Integer $postId contient l'identifiant du post sélectionné
      */
     public function getPost($postId)
     {
@@ -104,13 +104,39 @@ class PostManager extends Manager
         return $article;
     }
 
+    /**
+     * Méthode permettant d'appeler les commentaires sélectionnés dans la base de données et d'incorporer leurs valeurs dans des instances de la classe Comment
+     *
+     * @param Integer $postId contient l'identifiant du post sélectionné
+     */
     public function getComments($postId)
     {
+        // Connexion à la base de données
         $db = $this->dbConnect();
-        $req = $db->prepare('SELECT comment.date, comment.content, user.username FROM comment, user WHERE comment.articles_id = ? AND comment.user_id = user.id');
+        // Requête SQL pour récupérer les données des commentaires sélectionnés
+        $req = $db->prepare('SELECT comment.id, comment.date, comment.content, user.username FROM comment, user WHERE comment.articles_id = ? AND comment.user_id = user.id');
+        // Envoi du paramètre $postId à la requête pour sélectionner les bons commentaires
         $req->execute(array($postId));
 
-        return $req;
+        // Contiendra toutes les instances de commentaires dans un tableau
+        $listComments = array();
+        // PDO::FETCH_ASSOC renvoie les valeurs sous forme d'un tableau associatif.
+        while ($result_array = $req->fetchAll(PDO::FETCH_ASSOC)) {
+            // renvoie la clé correspondante à l'id du commentaire
+            $result_array_id = array_search('comment.id', $result_array);
+            // Liste chaque commentaire en fonction de son id
+            foreach ($result_array as $result_array_id => $value) {
+                // Renvoie les données du commentaire sélectionné dans la variable $commentData
+                $commentData = $result_array[$result_array_id];
+                // Création d'une instance de la classe Comment avec les valeurs contenues dans $commentData
+                $comment = new Comment($commentData);
+                // Retourne la nouvelle instance $comment dans le tableau $listComments.
+                array_push($listComments, $comment);
+            }
+        }
+        $req->closeCursor();
+
+        return $listComments;
     }
 
     public function postComment($postId, $userId, $comment)

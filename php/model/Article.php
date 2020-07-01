@@ -110,6 +110,7 @@ class Article
 	    	$this->_content = $content;
 	    }
 	}
+	
 	public function setUser($user)
 	{
 	    $user = (int) $user;

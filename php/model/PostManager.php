@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Fichier contenant le modèle de l'application
+ * Fichier contenant le modèle de gestion des articles de blog de l'application
  * @author Samy Jebbari Godinho
  * @version 1.0
  * date : 16.04.2020

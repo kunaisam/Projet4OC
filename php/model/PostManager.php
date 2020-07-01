@@ -7,8 +7,18 @@
  * date : 16.04.2020
  */
 
+
+/**
+ * Classe Postmanager
+ *
+ * Classe contenant le modèle de gestion des articles de blog
+ */
 class PostManager extends Manager
 {
+    /**
+     * Méthode permettant d'appeler des articles de blog dans la base de données et d'incorporer leur valeurs dans des instances de la classe Article
+     *
+     */
     public function getPosts()
     {
         $db = $this->dbConnect();
@@ -17,18 +27,34 @@ class PostManager extends Manager
         return $req;
     }
 
+    /**
+     * Méthode permettant d'appeler les trois derniers articles de blog dans la base de données et d'incorporer leur valeurs dans des instances de la classe Article
+     *
+     */
     public function getIndexPosts()
     {
+        // Connexion à la base de données
         $db = $this->dbConnect();
+        // Requête SQL pour récupérer les données des 3 derniers articles
         $req = $db->query('SELECT * FROM article ORDER BY id DESC LIMIT 0, 3');
-                // PDO::FETCH_ASSOC renvoie les valeurs sous forme d'un tableau associatif.
-        $result_array = $req->fetchAll(PDO::FETCH_ASSOC);
-        // Renvoie les données de l'utilisateur sélectionné dans la variable $userData
-        $articleData = $result_array[0];
-        // Création d'un objet de la classe User avec les valeurs contenues dans $userData
-        $article = new Article($articleData);
 
-        return $article;
+        // Contiendra toutes les instances d'articles dans un tableau
+        $listPosts = array();
+        // PDO::FETCH_ASSOC renvoie les valeurs sous forme d'un tableau associatif.
+        while ($result_array = $req->fetchAll(PDO::FETCH_ASSOC)) {
+            // Liste chaque article en fonction de son id
+            for ($value = 0; $value < 3; $value++) {
+                // Renvoie les données de l'article sélectionné dans la variable $articleData
+                $articleData = $result_array[$value];
+                // Création d'une instance de la classe Article avec les valeurs contenues dans $articleData
+                $article = new Article($articleData);
+                // Retourne la nouvelle instance $article dans le tableau $listposts.
+                array_push($listPosts, $article);
+            }
+        }
+        $req->closeCursor();
+
+        return $listPosts;
     }
 
     public function getPost($postId)

@@ -1,38 +1,34 @@
 <section>
 	<div id="block_articles">
-
-		    <a href="?<?= TAG_ACTION ?>=<?= ACTION_POST ?>&<?= TAG_IDPOST ?>=<?= $posts->getId() ?>" class="article">
+		<?php
+		foreach($posts as $data)
+		{
+		?>
+		    <a href="?<?= TAG_ACTION ?>=<?= ACTION_POST ?>&<?= TAG_IDPOST ?>=<?= $data->getId() ?>" class="article">
 		        <div>
-		            <span class="title_list_post"><?= $posts->getTitle() ?></span>
-		            <em>le <?= $posts->getDate() ?></em>
+		            <span class="title_list_post"><?= $data->getTitle() ?></span>
+		            <em>le <?= $data->getDate() ?></em>
 		        </div>
 		                
 		        <div>
 		        	<p class="content_list_post_view">
-		            	<?= $posts->getContent() ?>
+		            	<?= $data->getContent() ?>
 		            </p>
 		        </div>
 		    </a>
-
+		<?php
+		}
+		?>
 	</div>
 </section>
 
 <!--
-		<?php
-		while ($data = $posts->fetch())
-		{
-		?>
-
-		<?= $data['id'] ?>
-
-		<?= htmlspecialchars($data['title']) ?>
-		<?= $data['date'] ?>
-		<?= nl2br(htmlspecialchars($data['content'])) ?>
-
-		<?php
-		}
-		$posts->closeCursor();
-		?>
-PostManager : Faire une boucle Foreach pour créer toutes les instances de classe et les mettre dans un tableau
-listPostsView : Faire une boucle pour créer un article par instance à partir du tableau
+PostManager : Faire une boucle For ou Foreach pour créer toutes les instances de classe et les mettre dans un tableau   OKAYYYYYYY
+listPostsView : Faire une boucle pour créer un article par instance à partir du tableau    OKAYYYYYYY
+ensuite:
+	Créer un contrôleur pour les articles
+	Router : S'occuper de $post = $controller->post($idPost);
+	Router : S'occuper de $posts = $controller->articleListPosts();
+	S'occuper des commentaires
+	Connexion admin via .htaccess
 -->

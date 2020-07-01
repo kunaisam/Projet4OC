@@ -33,16 +33,28 @@ class Router
                 $posts = $controller->articleListPosts();
                 $ViewController->render(['listPostsView'], ['posts' => $posts, 'title' => 'Articles']);
                 break;
+
+            /**
+             * Action enclenchée lorsqu'on clique sur un article de blog
+             *
+             */
             case ACTION_POST :
+                // Opérateur ternaire : vérifie si une valeur TAG_IDPOST est envoyée par l'utilisateur, si oui, on attribue cette valeur à $idPost
                 $idPost = isset($_POST[TAG_IDPOST]) ? $_POST[TAG_IDPOST] : (isset($_GET[TAG_IDPOST]) ? $_GET[TAG_IDPOST] : null);
+                // Vérifie si $idPost contient une valeur
                 if (!empty($idPost)) {
+                    // Création de l'objet Post dans la variable $post
                     /* PLOOOOOOOOOOOOOOOOOOOOOOOPPPPPPPPPPPPPPPPPP */
-                    $post = $controller->post($idPost);
+                    $post = $postController->post($idPost);
+                    // Création d'objets Comment dans la variable $comments
                     $comments = $controller->comments($idPost);
+                    // Vérifie si une session est active
                     if (isset($_SESSION['username'])) {
+                        // Affiche le post, ses commentaires et si la session est active, affiche la possibilité d'ajouter un commentaire
                         $ViewController->render(['postView', 'addCommentView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $idPost]);
                     }
                     else {
+                        // Affiche seulement le post et ses commentaires
                         $ViewController->render(['postView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $idPost]);
                     }
                 }

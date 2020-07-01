@@ -22,14 +22,6 @@ class Controller
 	    return $posts;
 	}
 
-	public function post($id)
-	{
-		$postManager = new PostManager();
-	    $post = $postManager->getPost($id);
-
-	    return $post;
-	}
-
 	public function comments($id)
 	{
 		$postManager = new PostManager();

@@ -27,4 +27,19 @@ class PostController
 
 	    return $posts;
 	}
+
+	/**
+     * Méthode permettant d'appeler l'article de blog sélectionné à partir du PostManager et d'envoyer ses valeurs au routeur
+     *
+     * @param Integer $id contient l'identifiant du post sélectionné en page d'accueil
+     */
+	public function post($id)
+	{
+		// Création d'un objet $postManager
+		$postManager = new PostManager();
+		// Appel de la fonction getPost() de cet objet avec l'identifiant du post en paramètre
+	    $post = $postManager->getPost($id);
+
+	    return $post;
+	}
 }

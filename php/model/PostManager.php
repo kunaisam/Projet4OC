@@ -57,9 +57,16 @@ class PostManager extends Manager
         return $listPosts;
     }
 
+    /**
+     * Méthode permettant d'appeler l'article de blog sélectionné dans la base de données et d'incorporer ses valeurs dans une instance de la classe Article
+     *
+     * @param Integer $postId contient l'identifiant du post sélectionné en page d'accueil
+     */
     public function getPost($postId)
     {
+        // Connexion à la base de données
         $db = $this->dbConnect();
+        // Requête SQL pour récupérer les données de l'article sélectionné via son id
         $req = $db->prepare('SELECT * FROM article WHERE id = ?');
         // Envoi du paramètre $postId à la requête pour sélectionner le bon article
         $req->execute(array($postId));

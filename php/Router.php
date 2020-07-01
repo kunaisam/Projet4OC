@@ -25,6 +25,7 @@ class Router
         $ViewController = new ViewController();
         $formController = new FormController();
         $userController = new UserController();
+        $postController = new PostController();
         session_start();
 
         switch ($action) {
@@ -95,8 +96,7 @@ class Router
                     // Création d'une variable de session contenant le nom de l'utilisateur
                     $_SESSION['username'] = $user->getUsername();
                     // Récupération du contenu des articles de blog dans la variable $posts pour pouvoir les afficher sur la page d'accueil
-                    /* REMETTRE DE L'ORDRE DANS CETTE PARTIE $posts */
-                    $posts = $controller->indexListPosts();
+                    $posts = $postController->indexListPosts();
                     // Affichage des vues une fois l'utilisateur/administrateur connecté
                     $ViewController->render(['indexView', 'listPostsView'], ['posts' => $posts, 'title' => 'Blog de Jean Forteroche']);
                 }
@@ -109,13 +109,11 @@ class Router
             case ACTION_LOGOUT:
                 $_SESSION = array();
                 session_destroy();
-                /* REMETTRE DE L'ORDRE DANS CETTE PARTIE $posts */
-                $posts = $controller->indexListPosts();
+                $posts = $postController->indexListPosts();
                 $ViewController->render(['indexView', 'listPostsView'], ['posts' => $posts, 'title' => 'Blog de Jean Forteroche']);
                 break;
             default :
-                /* REMETTRE DE L'ORDRE DANS CETTE PARTIE $posts */
-                $posts = $controller->indexListPosts();
+                $posts = $postController->indexListPosts();
                 $ViewController->render(['indexView', 'listPostsView'], ['posts' => $posts, 'title' => 'Blog de Jean Forteroche']);
         }
     }

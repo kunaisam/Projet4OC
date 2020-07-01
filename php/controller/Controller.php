@@ -14,20 +14,6 @@
  */
 class Controller
 {
-	/**
-     * Méthode permettant d'appeler les trois derniers articles de blog à partir du PostManager et d'envoyer leurs valeurs au routeur
-     *
-     */
-	public function indexListPosts()
-	{
-		// Création d'un objet $postManager
-	    $postManager = new PostManager();
-	    // Appel de la fonction getIndexPosts() de cet objet
-	    $posts = $postManager->getIndexPosts();
-
-	    return $posts;
-	}
-
 	public function articleListPosts()
 	{
 	    $postManager = new PostManager(); // Création d'un objet

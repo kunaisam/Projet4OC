@@ -40,6 +40,7 @@ class Comment
      */
 	public function hydrate(array $data)
 	{
+
 		foreach ($data as $key => $value)
 		{
 			// On récupère le nom du setter correspondant à l'attribut. ucfirst($key) permet de passer la première lettre du setter en majuscule (setMajuscule)
@@ -105,17 +106,7 @@ class Comment
 
 	public function setUser($user)
 	{
-	    // On convertit l'argument en nombre entier.
-	    // Si c'en était déjà un, rien ne changera.
-	    // Sinon, la conversion donnera le nombre 0 (à quelques exceptions près, mais rien d'important ici).
-	    $user = (int) $user;
-	    
-	    // On vérifie ensuite si ce nombre est bien strictement positif.
-	    if ($user > 0)
-	    {
-	    	// Si c'est le cas, c'est tout bon, on assigne la valeur à l'attribut correspondant.
 	    	$this->_user = $user;
-	    }
 	}
 
 	public function setDate($date)

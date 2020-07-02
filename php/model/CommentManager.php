@@ -25,7 +25,7 @@ class CommentManager extends Manager
         // Connexion à la base de données
         $db = $this->dbConnect();
         // Requête SQL pour récupérer les données des commentaires sélectionnés
-        $req = $db->prepare('SELECT comment.id, comment.date, comment.content, user.username FROM comment, user WHERE comment.articles_id = ? AND comment.user_id = user.id');
+        $req = $db->prepare('SELECT comment.id, comment.date, comment.content, comment.user_id FROM comment WHERE comment.articles_id = ?');
         // Envoi du paramètre $postId à la requête pour sélectionner les bons commentaires
         $req->execute(array($postId));
 
@@ -41,6 +41,8 @@ class CommentManager extends Manager
                 $commentData = $result_array[$result_array_id];
                 // Création d'une instance de la classe Comment avec les valeurs contenues dans $commentData
                 $comment = new Comment($commentData);
+                $user = UserManager::getUserManager()->getUserById($commentData["user_id"]);
+                $comment->setUser($user);
                 // Retourne la nouvelle instance $comment dans le tableau $listComments.
                 array_push($listComments, $comment);
             }

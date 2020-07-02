@@ -45,7 +45,7 @@ class PostController
 	/**
      * Méthode permettant d'appeler l'article de blog sélectionné à partir du PostManager et d'envoyer ses valeurs au routeur
      *
-     * @param Integer $id contient l'identifiant du post sélectionné en page d'accueil
+     * @param Integer $id contient l'identifiant du post sélectionné
      */
 	public function post($id)
 	{

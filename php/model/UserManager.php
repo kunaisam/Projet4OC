@@ -14,6 +14,11 @@
  */
 class UserManager extends Manager
 {
+    public static function getUserManager()
+    {
+        return new UserManager();
+    }
+
     /**
      * Méthode permettant d'appeler un utilisateur dans la base de données et d'incorporer ses valeurs dans un objet de la classe User
      *
@@ -75,5 +80,27 @@ class UserManager extends Manager
         }
 
         return $req;
+    }
+
+    public function getUserById($idUser)
+    {
+        try {
+            // Connexion à la base de données
+            $db = $this->dbConnect();
+            // Requête SQL INSERT INTO pour ajouter le nouvel utilisateur à la base de données
+            $req = $db->prepare('SELECT login, username, password, profile_id FROM user WHERE id = ?');
+
+            $res = $req->execute(array($idUser));
+
+            $userData = $req->fetch(PDO::FETCH_ASSOC);
+            $user = new User($userData);
+            $profile = 1; // TODO Classe Profile et ProfileManager
+            $user->setProfile($profile);
+
+            return $user;
+        }
+        catch (Exception $e) {
+            return null;
+        }
     }
 }

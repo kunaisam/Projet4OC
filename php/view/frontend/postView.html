@@ -19,7 +19,7 @@
 		foreach($comments as $comment)
 		{
 		?>
-			<p><strong><?= $comment->getUser() ?></strong> le <?= $comment->getDate() ?></p>
+			<p><strong><?= $comment->getUser()->getUsername() ?></strong> le <?= $comment->getDate() ?></p>
            	<p><?= $comment->getContent() ?></p>
 	    <?php
 	    }

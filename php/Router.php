@@ -17,18 +17,26 @@ require( __DIR__ . '/config/config.php');
  */
 class Router
 {
+    /**
+     * Méthode enclenchée à l'arrivée d'un visiteur sur le site et à chacune de ses actions
+     *
+     */
     public function load()
     {
+        // Opérateur ternaire : vérifie si une valeur TAG_ACTION existe, si oui, on attribue cette valeur à $action
         $action = isset($_POST[TAG_ACTION]) ? $_POST[TAG_ACTION] : (isset($_GET[TAG_ACTION]) ? $_GET[TAG_ACTION] : null);
 
+        // Instanciation de tous les contrôleurs
         $controller = new Controller();
         $ViewController = new ViewController();
         $formController = new FormController();
         $userController = new UserController();
         $postController = new PostController();
         $commentController = new CommentController();
+        // Démarrage d'une session
         session_start();
 
+        // Switch permettant de déterminer l'action entreprise par le visiteur
         switch ($action) {
             /**
              * Action enclenchée lorsqu'on clique sur la section Articles
@@ -80,34 +88,61 @@ class Router
                 $comment = $_POST['comment'];
                 // Envoi du commentaire au CommentController
                 $newComment = $commentController->addComment($idPost, $comment);
+                // Création de l'objet Post dans la variable $post
+                $post = $postController->post($idPost);
+                // Création d'objets Comment dans la variable $comments
+                $comments = $commentController->getComments($idPost);
                 // Si le nouveau commentaire ne vaut pas NULL
                 if ($newComment) {
-                    echo 'Réussi !';
-                    // var_dump($idPost);
+                    // Affiche le post, ses commentaires et affiche la possibilité d'ajouter un commentaire
+                    $ViewController->render(['postView', 'addCommentView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $idPost]);
                 }
                 else {
-                    echo 'Erreur : aucun commentaire envoyé';
+                    // Affiche le post, ses commentaires, le message d'échec d'envoi du commentaire et affiche la possibilité d'ajouter un commentaire
+                    $ViewController->render(['postView', 'addCommentFailedView', 'addCommentView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $idPost]);
                 }
                 break;
+
+            /**
+             * Action enclenchée à l'affichage du formulaire d'inscription
+             *
+             */
             case ACTION_REGISTRATIONFORM :
+                // Vue correspondante au formulaire d'inscription
                 $ViewController->render(['registrationView'], ['title' => 'Inscription']);
                 break;
+
+            /**
+             * Action enclenchée à l'envoi du formulaire d'inscription
+             *
+             */
             case ACTION_REGISTRATIONSUBMIT:
+                // Récupération de champs du formulaire dans les variables $login, $pseudo, $password et $passwordConfirmation
                 $login = $_POST['login'];
                 $pseudo = $_POST['pseudo'];
                 $password = $_POST['pass'];
                 $passwordConfirmation = $_POST['pass2'];
+                // Création d'un nouvel utilisateur avec les données des variables
                 $newUser = $userController->createNewUser($login, $pseudo, $password, $passwordConfirmation);
+                // Si $newUser n'est pas NULL, donc si les champs du formulaire ont été remplis correctement
                 if ($newUser) 
                 {
+                    // Affichage d'un message d'inscription réussie et du formulaire de connexion
                     $ViewController->render(['registrationSucessView', 'loginView'], ['title' => 'Inscription réussie']);
                 }
                 else
                 {
+                    // Affichage d'un message d'inscription ratée et du formulaire d'inscription
                     $ViewController->render(['registrationFailureView', 'registrationView'], ['title' => 'Inscription']);
                 }
                 break;
+
+            /**
+             * Action enclenchée à l'affichage du formulaire de connexion
+             *
+             */
             case ACTION_LOGINFORM :
+                // Vue correspondante au formulaire de connexion
                 $ViewController->render(['loginView'], ['title' => 'Connexion']);
                 break;
 
@@ -126,6 +161,7 @@ class Router
                 {
                     // Création d'une variable de session contenant le nom de l'utilisateur
                     $_SESSION['username'] = $user->getUsername();
+                    // Création d'une variable de session contenant l'id de l'utilisateur
                     $_SESSION['userId'] = $user->getId();
                     // Récupération du contenu des articles de blog dans la variable $posts pour pouvoir les afficher sur la page d'accueil
                     $posts = $postController->indexListPosts();

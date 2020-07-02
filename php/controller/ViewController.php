@@ -1,7 +1,25 @@
 <?php
 
+/**
+ * Fichier contenant le contrôleur des vues utilisateur de l'application
+ * @author Samy Jebbari Godinho
+ * @version 1.0
+ * date : 02.07.2020
+ */
+
+/**
+ * Classe ViewController
+ *
+ * Classe contenant le contrôleur des vues utilisateur de l'application
+ */
 class ViewController
 {
+	/**
+	 * Méthode permettant d'appeler les différentes vues
+	 *
+	 * @param String $view contient le nom des vues souhaitées
+     * @param String $params contient les paramètres à envoyer aux vues
+	 */
 	public function render($view, $params)
 	{
 		foreach($params as $var => $val)

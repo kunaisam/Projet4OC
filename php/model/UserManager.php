@@ -102,8 +102,6 @@ class UserManager extends Manager
             $userData = $req->fetch(PDO::FETCH_ASSOC);
             // Instantiation d'un User avec les données contenues dans $userData
             $user = new User($userData);
-            /* $profile = 1; TODO Classe Profile et ProfileManager
-            $user->setProfile($profile); */
 
             return $user;
         }

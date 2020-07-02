@@ -167,6 +167,13 @@ h2
 	margin-bottom: 1em;
 }
 
+#addCommentFailedView
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
 #comment
 {
 	border: 1px solid #AFAFAF;

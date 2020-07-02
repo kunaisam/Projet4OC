@@ -41,7 +41,9 @@ class CommentManager extends Manager
                 $commentData = $result_array[$result_array_id];
                 // Création d'une instance de la classe Comment avec les valeurs contenues dans $commentData
                 $comment = new Comment($commentData);
+                // Instancie une classe User à partir de l'identifiant de la personne ayant commenté
                 $user = UserManager::getUserManager()->getUserById($commentData["user_id"]);
+                // Intégration de l'instance User dans l'instance Comment
                 $comment->setUser($user);
                 // Retourne la nouvelle instance $comment dans le tableau $listComments.
                 array_push($listComments, $comment);
@@ -52,15 +54,35 @@ class CommentManager extends Manager
         return $listComments;
     }
 
-    public function postComment($postId, $userId, $comment)
+    /**
+     * Méthode permettant de créer un commentaire et de l'incorporer dans la base de données
+     *
+     * @param Object $commentInstance contient l'instance du commentaire qui va être ajouté en base de données
+     */
+    public function postComment(Comment $commentInstance)
     {
-        $db = $this->dbConnect();
-        $req = $db->prepare('INSERT INTO comment(articles_id, user_id, comment.date, content) VALUES(?, ?, NOW(), ?)');
-        $req->execute(array(
-            'articles_id' => $postId,
-            'user_id' => $userId, 
-            'content' => $comment
-        ));
+        try {
+            // Connexion à la base de données
+            $db = $this->dbConnect();
+            // Requête SQL INSERT INTO pour ajouter le nouveau commentaire à la base de données
+            $req = $db->prepare('INSERT INTO comment(articles_id, user_id, comment.date, content, reported) VALUES(:articles_id, :user_id, NOW(), :content, :reported)');
+            
+            // Création de variables avec les valeurs de l'objet Comment
+            $articles_id = $commentInstance->getArticles();
+            $user_id = $commentInstance->getUser();
+            $content = $commentInstance->getContent();
+            $reported = $commentInstance->getReported();
+
+            // Ajout des données du commentaire à la base de données
+            $req->bindParam('articles_id', $articles_id, PDO::PARAM_INT);
+            $req->bindParam('user_id', $user_id, PDO::PARAM_INT);
+            $req->bindParam('content', $content, PDO::PARAM_STR);
+            $req->bindParam('reported', $reported, PDO::PARAM_INT);
+            $res = $req->execute();
+        }
+        catch (Exception $e) {
+            die($e);
+        }
 
         return $req;
     }

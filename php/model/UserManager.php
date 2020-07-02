@@ -14,6 +14,10 @@
  */
 class UserManager extends Manager
 {
+    /**
+     * Méthode permettant de créer une instance de la classe UserManager
+     *
+     */
     public static function getUserManager()
     {
         return new UserManager();
@@ -50,9 +54,7 @@ class UserManager extends Manager
     /**
      * Méthode permettant de créer un utilisateur et de l'incorporer dans la base de données
      *
-     * @param String $login contient la valeur entrée par l'utilisateur dans la partie Identifiant du fomulaire d'inscription
-     * @param String $pseudo contient la valeur entrée par l'utilisateur dans la partie Pseudonyme du fomulaire d'inscription
-     * @param String $password contient la valeur entrée par l'utilisateur dans la partie Mot de passe du fomulaire d'inscription
+     * @param Object $user contient l'instance de l'utilisateur qui va être ajouté en base de données
      */
     public function createNewUser(User $user)
     {
@@ -82,6 +84,11 @@ class UserManager extends Manager
         return $req;
     }
 
+    /**
+     * Méthode permettant d'appeler un utilisateur dans la base de données en fonction de son id et d'incorporer ses valeurs dans un objet de la classe User
+     *
+     * @param Integer $idUser contient l'id de l'utilisateur
+     */
     public function getUserById($idUser)
     {
         try {
@@ -89,13 +96,14 @@ class UserManager extends Manager
             $db = $this->dbConnect();
             // Requête SQL INSERT INTO pour ajouter le nouvel utilisateur à la base de données
             $req = $db->prepare('SELECT login, username, password, profile_id FROM user WHERE id = ?');
-
             $res = $req->execute(array($idUser));
 
+            // Récupération des données de l'utilisateur dans la variable $userData
             $userData = $req->fetch(PDO::FETCH_ASSOC);
+            // Instantiation d'un User avec les données contenues dans $userData
             $user = new User($userData);
-            $profile = 1; // TODO Classe Profile et ProfileManager
-            $user->setProfile($profile);
+            /* $profile = 1; TODO Classe Profile et ProfileManager
+            $user->setProfile($profile); */
 
             return $user;
         }

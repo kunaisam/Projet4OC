@@ -15,11 +15,11 @@
 class CommentController
 {
 	/**
-     * Méthode permettant d'appeler l'article de blog sélectionné à partir du PostManager et d'envoyer ses valeurs au routeur
+     * Méthode permettant d'appeler les commentaires sélectionnés à partir du CommentManager et d'envoyer ses valeurs au routeur
      *
      * @param Integer $id contient l'identifiant du post sélectionné
      */
-	public function comments($id)
+	public function getComments($id)
 	{
 		// Création d'un objet $commentManager
 		$commentManager = new CommentManager();
@@ -29,11 +29,32 @@ class CommentController
 		return $comments;
 	}
 
-	public function addComment($postId, $userId, $comment)
+	/**
+     * Méthode permettant d'ajouter un commentaire à partir du CommentManager
+     *
+     * @param Integer $postId contient l'identifiant du post sélectionné
+     * @param String $comment contient le commentaire envoyé par l'utilisateur
+     */
+	public function addComment($postId, $comment)
 	{
-		$commentManager = new CommentManager();
-		$comment = $commentManager->postComment($postId, $userId, $comment);
+		// Vérifie si les champs ont été correctement remplis
+		if (!empty($postId) && !empty($comment)) {
+			// Création d'un objet Comment avec ses données dans un tableau
+			$commentInstance = new Comment([
+				'articles' => $postId,
+	            'user' => $_SESSION['userId'], 
+	            'content' => $comment,
+	            'reported' => 1
+			]);
+			// Création d'un objet CommentManager
+			$commentManager = new CommentManager();
+			// Création d'un nouveau commentaire avec la méthode postComment et l'objet $commentInstance en paramètre
+			$commentInstancePost = $commentManager->postComment($commentInstance);
 
-		return $comment;
+			return $commentInstancePost;
+		}
+		else {
+			return NULL;
+		}
 	}
 }

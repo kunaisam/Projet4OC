@@ -40,7 +40,6 @@ class Comment
      */
 	public function hydrate(array $data)
 	{
-
 		foreach ($data as $key => $value)
 		{
 			// On récupère le nom du setter correspondant à l'attribut. ucfirst($key) permet de passer la première lettre du setter en majuscule (setMajuscule)

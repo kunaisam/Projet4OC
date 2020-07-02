@@ -53,7 +53,7 @@ class Router
                     // Création de l'objet Post dans la variable $post
                     $post = $postController->post($idPost);
                     // Création d'objets Comment dans la variable $comments
-                    $comments = $commentController->comments($idPost);
+                    $comments = $commentController->getComments($idPost);
                     // Vérifie si une session est active
                     if (isset($_SESSION['username'])) {
                         // Affiche le post, ses commentaires et si la session est active, affiche la possibilité d'ajouter un commentaire
@@ -68,10 +68,22 @@ class Router
                     echo 'Erreur : aucun identifiant de billet envoyé';
                 }
                 break;
+
+            /**
+             * Action enclenchée lorsqu'on envoie un nouveau commentaire
+             *
+             */
             case ACTION_ADDCOMMENT:
+                // Opérateur ternaire : vérifie si une valeur TAG_IDPOST est envoyée par l'utilisateur, si oui, on attribue cette valeur à $idPost
+                $idPost = isset($_POST[TAG_IDPOST]) ? $_POST[TAG_IDPOST] : (isset($_GET[TAG_IDPOST]) ? $_GET[TAG_IDPOST] : null);
+                // Récupère le commentaire posté
                 $comment = $_POST['comment'];
-                if (!empty($comment)) {
-                    $idPost = isset($_POST[TAG_IDPOST]) ? $_POST[TAG_IDPOST] : (isset($_GET[TAG_IDPOST]) ? $_GET[TAG_IDPOST] : null);
+                // Envoi du commentaire au CommentController
+                $newComment = $commentController->addComment($idPost, $comment);
+                // Si le nouveau commentaire ne vaut pas NULL
+                if ($newComment) {
+                    echo 'Réussi !';
+                    // var_dump($idPost);
                 }
                 else {
                     echo 'Erreur : aucun commentaire envoyé';
@@ -114,6 +126,7 @@ class Router
                 {
                     // Création d'une variable de session contenant le nom de l'utilisateur
                     $_SESSION['username'] = $user->getUsername();
+                    $_SESSION['userId'] = $user->getId();
                     // Récupération du contenu des articles de blog dans la variable $posts pour pouvoir les afficher sur la page d'accueil
                     $posts = $postController->indexListPosts();
                     // Affichage des vues une fois l'utilisateur/administrateur connecté

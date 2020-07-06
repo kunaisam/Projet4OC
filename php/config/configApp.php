@@ -10,6 +10,7 @@
 define( "TAG_ACTION", "action");
 define( "TAG_IDPOST", "idPost");
 
+define( "ACTION_HOME", "home");
 define( "ACTION_LISTPOSTS", "listposts");
 define( "ACTION_REGISTRATIONFORM", "registrationForm");
 define( "ACTION_LOGINFORM", "loginForm");
@@ -21,6 +22,8 @@ define("ACTION_REGISTRATIONSUBMIT", "registrationSubmit");
 define( "ACTION_LOGINSUBMIT", "loginSubmit");
 define( "ACTION_LOGINADMIN", "loginAdmin");
 define( "ACTION_LOGOUT", "logout");
+
+define( "ACTION_COMMENTSADMIN", "commentsAdmin");
 
 define( "ACTION_POST", "post");
 

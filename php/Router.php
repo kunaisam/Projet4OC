@@ -194,7 +194,28 @@ class Router
              *
              */
             case ACTION_LOGINADMIN:
+                // Affichage de la vue administrateur
                 $ViewController->renderAdmin(['adminView'], ['title' => 'Administration : Blog de Jean Forteroche']);
+                break;
+
+            /**
+             * Action enclenchée à lors du clic sur le bouton Commentaires signalés de la page administrateur
+             *
+             */
+            case ACTION_COMMENTSADMIN:
+                // Affichage de la vue administrateur
+                $ViewController->renderAdmin(['reportedCommentsAdminView'], ['title' => 'Commentaires Signalés']);
+                break;
+
+            /**
+             * Action, Accueil
+             *
+             */
+            case ACTION_HOME:
+                // Récupération du contenu des articles de blog dans la variable $posts pour pouvoir les afficher sur la page d'accueil
+                $posts = $postController->indexListPosts();
+                // Affichage des vues
+                $ViewController->render(['indexView', 'listPostsView'], ['posts' => $posts, 'title' => 'Blog de Jean Forteroche']);
                 break;
 
             /**

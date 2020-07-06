@@ -19,6 +19,7 @@ define("ACTION_ADDCOMMENT", "addComment");
 define("ACTION_REGISTRATIONSUBMIT", "registrationSubmit");
 
 define( "ACTION_LOGINSUBMIT", "loginSubmit");
+define( "ACTION_LOGINADMIN", "loginAdmin");
 define( "ACTION_LOGOUT", "logout");
 
 define( "ACTION_POST", "post");

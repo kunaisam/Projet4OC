@@ -190,6 +190,14 @@ class Router
                 break;
 
             /**
+             * Action enclenchée à lors du clic sur le bouton Connexion Administrateur de la page connexion
+             *
+             */
+            case ACTION_LOGINADMIN:
+                $ViewController->renderAdmin(['adminView'], ['title' => 'Administration : Blog de Jean Forteroche']);
+                break;
+
+            /**
              * Pas d'action, Accueil
              *
              */

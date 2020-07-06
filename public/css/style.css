@@ -240,6 +240,30 @@ h2
 	align-items: center;
 }
 
+#admin_login_button
+{
+	text-decoration: none;
+	color: #000000;
+	background-color: #d0d0d0;
+	padding: 1em;
+	border: 1px solid #AFAFAF;
+	border-radius: 10px;
+	box-shadow: 1px 1px 1px #777777;
+	transition: all 0.3s ease-in-out;
+}
+
+#admin_login_button:hover
+{
+	background-color: #b0b0b0;
+}
+
+/* ADMIN VIEW */
+
+#hallo
+{
+	color: red;
+}
+
 /* MEDIA QUERIES */
 
 @media screen and (max-width: 640px) {

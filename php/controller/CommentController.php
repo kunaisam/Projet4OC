@@ -30,6 +30,20 @@ class CommentController
 	}
 
 	/**
+     * Méthode permettant d'appeler les commentaires signalés sélectionnés à partir du CommentManager et d'envoyer ses valeurs au routeur
+     *
+     */
+	public function getReportedComments()
+	{
+		// Création d'un objet $commentManager
+		$commentManager = new CommentManager();
+		// Appel de la fonction getReportedComments() de cet objet
+		$comments = $commentManager->getReportedComments();
+
+		return $comments;
+	}
+
+	/**
      * Méthode permettant d'ajouter un commentaire à partir du CommentManager
      *
      * @param Integer $postId contient l'identifiant du post sélectionné

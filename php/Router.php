@@ -203,8 +203,10 @@ class Router
              *
              */
             case ACTION_COMMENTSADMIN:
-                // Affichage de la vue administrateur
-                $ViewController->renderAdmin(['reportedCommentsAdminView'], ['title' => 'Commentaires Signalés']);
+                // Création des instances de chaque commentaire signalé
+                $comments = $commentController->getReportedComments();
+                // Affichage de la vue administrateur de modération des commentaires
+                $ViewController->renderAdmin(['reportedCommentsAdminView'], ['comments' => $comments, 'title' => 'Commentaires Signalés']);
                 break;
 
             /**

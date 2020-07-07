@@ -55,6 +55,37 @@ class CommentManager extends Manager
     }
 
     /**
+     * Méthode permettant d'appeler les commentaires signalés dans la base de données et d'incorporer leurs valeurs dans des instances de la classe Comment
+     *
+     */
+    public function getReportedComments()
+    {
+        // Connexion à la base de données
+        $db = $this->dbConnect();
+        // Requête SQL pour récupérer les données des commentaires sélectionnés
+        $req = $db->query('SELECT * FROM comment WHERE reported = 2');
+        // Contiendra toutes les instances de commentaires dans un tableau
+        $listComments = array();
+        // PDO::FETCH_ASSOC renvoie les valeurs sous forme d'un tableau associatif.
+        while ($result_array = $req->fetchAll(PDO::FETCH_ASSOC)) {
+            // renvoie la clé correspondante à l'id du commentaire
+            $result_array_id = array_search('comment.id', $result_array);
+            // Liste chaque commentaire en fonction de son id
+            foreach ($result_array as $result_array_id => $value) {
+                // Renvoie les données du commentaire sélectionné dans la variable $commentData
+                $commentData = $result_array[$result_array_id];
+                // Création d'une instance de la classe Comment avec les valeurs contenues dans $commentData
+                $comment = new Comment($commentData);
+                // Retourne la nouvelle instance $comment dans le tableau $listComments.
+                array_push($listComments, $comment);
+            }
+        }
+        $req->closeCursor();
+
+        return $listComments;
+    }
+
+    /**
      * Méthode permettant de créer un commentaire et de l'incorporer dans la base de données
      *
      * @param Object $commentInstance contient l'instance du commentaire qui va être ajouté en base de données

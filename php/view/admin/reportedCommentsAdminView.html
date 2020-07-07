@@ -5,5 +5,25 @@
 </section>
 
 <section>
-	
+	<div id="reported_comments_text"><p>Cette section contient les commentaires signalés.<br />
+	Si le commentaire est innaproprié, vous pouvez le supprimer.<br />
+	Si ce n'est pas le cas, vous pouvez supprimer le signalement.</p></div>
+	<?php
+	foreach($comments as $data)
+	{
+	?>
+	    <div class="article">
+	        <div>
+	            <em>le <?= $data->getDate() ?></em>
+	        </div>
+		                
+	    	<div>
+		        <p class="content_list_post_view">
+		           	<?= $data->getContent() ?>
+		        </p>
+		    </div>
+		</div>
+	<?php
+	}
+	?>	
 </section>

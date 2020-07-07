@@ -281,6 +281,15 @@ h2
 	transition: all 0.3s ease-in-out;
 }
 
+/* ADMIN COMMENTS VIEW */
+
+#reported_comments_text
+{
+	display: flex;
+	justify-content: center;
+	text-align: center;
+}
+
 .top_bar_link:hover
 {
 	background-color: #b0b0b0;

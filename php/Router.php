@@ -201,6 +201,22 @@ class Router
                 break;
 
             /**
+             * Action enclenchée lors de la supression d'un article
+             *
+             */
+            case ACTION_DELETEPOST:
+                // Opérateur ternaire : vérifie si une valeur TAG_IDPOST est envoyée par l'utilisateur, si oui, on attribue cette valeur à $idPost
+                $idPost = isset($_POST[TAG_IDPOST]) ? $_POST[TAG_IDPOST] : (isset($_GET[TAG_IDPOST]) ? $_GET[TAG_IDPOST] : null);
+                // Supression d'un article
+                $post = $postController->deletePost($idPost);
+                // Création des instances de chaque article
+                $posts = $postController->articleListPosts();
+                // Affichage de la vue administrateur
+                $ViewController->renderAdmin(['adminView', 'listPostsAdminView'], ['posts' => $posts, 'title' => 'Administration : Blog de Jean Forteroche']);
+
+                break;
+
+            /**
              * Action enclenchée lors du clic sur le bouton Commentaires signalés de la page administrateur
              *
              */

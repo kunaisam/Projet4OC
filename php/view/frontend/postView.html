@@ -19,7 +19,10 @@
 		foreach($comments as $comment)
 		{
 		?>
-			<p><strong><?= $comment->getUser()->getUsername() ?></strong> le <?= $comment->getDate() ?> <a href="?<?= TAG_ACTION ?>=<?= ACTION_REPORTCOMMENT ?>&<?= TAG_IDPOST ?>=<?= $comment->getArticles() ?>&<?= TAG_IDCOMMENT ?>=<?= $comment->getId() ?>">Signaler</a></p>
+			<p>
+				<strong><?= $comment->getUser()->getUsername() ?></strong> le <?= $comment->getDate() ?> 
+				<a href="?<?= TAG_ACTION ?>=<?= ACTION_REPORTCOMMENT ?>&<?= TAG_IDPOST ?>=<?= $comment->getArticles() ?>&<?= TAG_IDCOMMENT ?>=<?= $comment->getId() ?>">Signaler</a>
+			</p>
            	<p><?= $comment->getContent() ?></p>
 	    <?php
 	    }

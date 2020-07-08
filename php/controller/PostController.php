@@ -56,4 +56,19 @@ class PostController
 
 	    return $post;
 	}
+
+	/**
+     * Méthode permettant de supprimer l'article de blog sélectionné à partir du PostManager
+     *
+     * @param Integer $idPost contient l'identifiant du post sélectionné
+     */
+	public function deletePost($idPost)
+	{
+		// Création d'un objet $postManager
+		$postManager = new PostManager();
+		// Appel de la fonction deletePost() de cet objet avec l'identifiant du post en paramètre
+	    $post = $postManager->deletePost($idPost);
+
+	    return $post;
+	}
 }

@@ -103,4 +103,28 @@ class PostManager extends Manager
 
         return $article;
     }
+
+    /**
+     * Méthode permettant de supprimer un article
+     *
+     * @param Integer $idPost contient l'identifiant de l'article sélectionné
+     */
+    public function deletePost($idPost)
+    {
+        // Connexion à la base de données
+        $db = $this->dbConnect();
+        // Création d'un objet Article avec ses données dans un tableau
+        $postInstance = new Article([
+            'id' => $idPost
+        ]);
+        // Attribution de l'id de l'article à la variable $id
+        $id = $postInstance->getId();
+
+        // Requête SQL pour supprimer l'article
+        $req = $db->prepare('DELETE FROM article WHERE id = :id');
+        // Attribution des variables à la requête
+        $req->execute(array(
+            'id' => $id
+        ));
+    }
 }

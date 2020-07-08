@@ -4,6 +4,7 @@
 		foreach($posts as $data)
 		{
 		?>
+		<div id="block_single_admin_article">
 		    <div class="article_admin">
 		        <div>
 		            <span class="title_list_post"><?= $data->getTitle() ?></span>
@@ -18,8 +19,9 @@
 		    </div>
 		    <div class="edit_delete_post_box">
 		    	<a href="?<?= TAG_ACTION ?>=<?= ACTION_POST ?>&<?= TAG_IDPOST ?>=<?= $data->getId() ?>" class="edit_post_button">Modifier</a>
-		    	<a href="#"class="delete_post_button">Supprimer</a>
+		    	<a href="?<?= TAG_ACTION ?>=<?= ACTION_DELETEPOST ?>&<?= TAG_IDPOST ?>=<?= $data->getId() ?>"class="delete_post_button">Supprimer</a>
 		    </div>
+		</div>
 		<?php
 		}
 		?>

@@ -298,6 +298,16 @@ h2
 	margin-bottom: 1em;
 }
 
+#block_single_admin_article
+{
+	transition: all 0.3s ease-in-out;
+}
+
+#block_single_admin_article:hover
+{
+	background-color: #E0E0E0;
+}
+
 .edit_delete_post_box
 {
 	display: flex;

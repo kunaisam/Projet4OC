@@ -59,6 +59,21 @@ class CommentController
 	}
 
 	/**
+     * Méthode permettant de nomaliser les commentaires signalés
+     *
+     * @param Integer $id contient l'identifiant du commentaire sélectionné
+     */
+	public function normaliseComment($id)
+	{
+		// Création d'un objet $commentManager
+		$commentManager = new CommentManager();
+		// Appel de la fonction normaliseComment() de cet objet avec l'identifiant du commentaire en paramètre
+		$comment = $commentManager->normaliseComment($id);
+
+		return $comment;
+	}
+
+	/**
      * Méthode permettant d'ajouter un commentaire à partir du CommentManager
      *
      * @param Integer $postId contient l'identifiant du post sélectionné

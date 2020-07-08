@@ -236,6 +236,22 @@ class Router
                 break;
 
             /**
+             * Action enclenchée lors de la normalisation d'un commentaire signalé
+             *
+             */
+            case ACTION_NORMALISECOMMENT:
+                // Récupération de l'id du commentaire à normaliser
+                $id = $_GET['id'];
+                // Normalisation d'un commentaire
+                $comment = $commentController->normaliseComment($id);
+                // Création des instances de chaque commentaire signalé
+                $comments = $commentController->getReportedComments();
+                // Affichage de la vue administrateur de modération des commentaires
+                $ViewController->renderAdmin(['reportedCommentsAdminView'], ['comments' => $comments, 'title' => 'Commentaires Signalés']);
+
+                break;
+
+            /**
              * Action, Accueil
              *
              */

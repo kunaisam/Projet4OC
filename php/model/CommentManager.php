@@ -120,6 +120,34 @@ class CommentManager extends Manager
     }
 
     /**
+     * Méthode permettant de normaliser les commentaires signalés
+     *
+     * @param Integer $id contient l'identifiant du commentaire sélectionné
+     */
+    public function normaliseComment($id)
+    {
+        // Connexion à la base de données
+        $db = $this->dbConnect();
+        // Création d'un objet Comment avec ses données dans un tableau
+        $commentInstance = new Comment([
+            'id' => $id,
+            'reported' => 1
+        ]);
+        // Attribution de l'id du commentaire à la variable $idComment
+        $idComment = $commentInstance->getId();
+        // Attribution du signalement normalisé du commentaire à la variable $reported
+        $reported = $commentInstance->getReported();
+
+        // Requête SQL pour mettre à jour le signalement normalisé du commmentaire
+        $req = $db->prepare('UPDATE comment SET reported = :reported WHERE id = :id');
+        // Attribution des variables à la requête
+        $req->execute(array(
+            'id' => $idComment,
+            'reported' => $reported
+        ));
+    }
+
+    /**
      * Méthode permettant de créer un commentaire et de l'incorporer dans la base de données
      *
      * @param Object $commentInstance contient l'instance du commentaire qui va être ajouté en base de données

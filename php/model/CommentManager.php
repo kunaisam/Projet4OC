@@ -148,6 +148,30 @@ class CommentManager extends Manager
     }
 
     /**
+     * Méthode permettant de supprimer les commentaires signalés
+     *
+     * @param Integer $id contient l'identifiant du commentaire sélectionné
+     */
+    public function deleteComment($id)
+    {
+        // Connexion à la base de données
+        $db = $this->dbConnect();
+        // Création d'un objet Comment avec ses données dans un tableau
+        $commentInstance = new Comment([
+            'id' => $id
+        ]);
+        // Attribution de l'id du commentaire à la variable $idComment
+        $idComment = $commentInstance->getId();
+
+        // Requête SQL pour supprimer le commmentaire signalé
+        $req = $db->prepare('DELETE FROM comment WHERE id = :id');
+        // Attribution des variables à la requête
+        $req->execute(array(
+            'id' => $idComment
+        ));
+    }
+
+    /**
      * Méthode permettant de créer un commentaire et de l'incorporer dans la base de données
      *
      * @param Object $commentInstance contient l'instance du commentaire qui va être ajouté en base de données

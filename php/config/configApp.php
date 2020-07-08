@@ -18,6 +18,7 @@ define( "ACTION_LOGINFORM", "loginForm");
 define("ACTION_ADDCOMMENT", "addComment");
 define("ACTION_REPORTCOMMENT", "reportComment");
 define("ACTION_NORMALISECOMMENT", "normaliseComment");
+define("ACTION_DELETECOMMENT", "deleteComment");
 
 define("ACTION_REGISTRATIONSUBMIT", "registrationSubmit");
 

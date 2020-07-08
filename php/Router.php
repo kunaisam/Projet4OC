@@ -252,6 +252,22 @@ class Router
                 break;
 
             /**
+             * Action enclenchée lors de la supression d'un commentaire signalé
+             *
+             */
+            case ACTION_DELETECOMMENT:
+                // Récupération de l'id du commentaire à supprimer
+                $id = $_GET['id'];
+                // Supression d'un commentaire
+                $comment = $commentController->deleteComment($id);
+                // Création des instances de chaque commentaire signalé
+                $comments = $commentController->getReportedComments();
+                // Affichage de la vue administrateur de modération des commentaires
+                $ViewController->renderAdmin(['reportedCommentsAdminView'], ['comments' => $comments, 'title' => 'Commentaires Signalés']);
+
+                break;
+
+            /**
              * Action, Accueil
              *
              */

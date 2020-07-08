@@ -214,8 +214,8 @@ class Router
              *
              */
             case ACTION_REPORTCOMMENT:
-                // Récupération de l'id du commentaire à signaler
-                $id = $_GET['id'];
+                // Opérateur ternaire : vérifie si une valeur TAG_IDCOMMENT est envoyée par l'utilisateur, si oui, on attribue cette valeur à $id
+                $id = isset($_POST[TAG_IDCOMMENT]) ? $_POST[TAG_IDCOMMENT] : (isset($_GET[TAG_IDCOMMENT]) ? $_GET[TAG_IDCOMMENT] : null);
                 // Signalement d'un commentaire
                 $comments = $commentController->reportComment($id);
                 // Opérateur ternaire : vérifie si une valeur TAG_IDPOST est envoyée par l'utilisateur, si oui, on attribue cette valeur à $idPost
@@ -240,8 +240,8 @@ class Router
              *
              */
             case ACTION_NORMALISECOMMENT:
-                // Récupération de l'id du commentaire à normaliser
-                $id = $_GET['id'];
+                // Opérateur ternaire : vérifie si une valeur TAG_IDCOMMENT est envoyée par l'utilisateur, si oui, on attribue cette valeur à $id
+                $id = isset($_POST[TAG_IDCOMMENT]) ? $_POST[TAG_IDCOMMENT] : (isset($_GET[TAG_IDCOMMENT]) ? $_GET[TAG_IDCOMMENT] : null);
                 // Normalisation d'un commentaire
                 $comment = $commentController->normaliseComment($id);
                 // Création des instances de chaque commentaire signalé
@@ -256,8 +256,8 @@ class Router
              *
              */
             case ACTION_DELETECOMMENT:
-                // Récupération de l'id du commentaire à supprimer
-                $id = $_GET['id'];
+                // Opérateur ternaire : vérifie si une valeur TAG_IDCOMMENT est envoyée par l'utilisateur, si oui, on attribue cette valeur à $id
+                $id = isset($_POST[TAG_IDCOMMENT]) ? $_POST[TAG_IDCOMMENT] : (isset($_GET[TAG_IDCOMMENT]) ? $_GET[TAG_IDCOMMENT] : null);
                 // Supression d'un commentaire
                 $comment = $commentController->deleteComment($id);
                 // Création des instances de chaque commentaire signalé

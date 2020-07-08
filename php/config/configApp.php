@@ -9,6 +9,7 @@
 
 define( "TAG_ACTION", "action");
 define( "TAG_IDPOST", "idPost");
+define( "TAG_IDCOMMENT", "idComment");
 
 define( "ACTION_HOME", "home");
 define( "ACTION_LISTPOSTS", "listposts");

@@ -23,8 +23,8 @@
 		        </p>
 		    </div>
 		    <div class="edit_comments_box">
-		    	<a href="?<?= TAG_ACTION ?>=<?= ACTION_NORMALISECOMMENT ?>&amp;id=<?= $data->getId() ?>" class="normalise_comment">Normaliser</a>
-		    	<a href="?<?= TAG_ACTION ?>=<?= ACTION_DELETECOMMENT ?>&amp;id=<?= $data->getId() ?>" class="delete_comment">Supprimer</a>
+		    	<a href="?<?= TAG_ACTION ?>=<?= ACTION_NORMALISECOMMENT ?>&<?= TAG_IDCOMMENT ?>=<?= $data->getId() ?>" class="normalise_comment">Normaliser</a>
+		    	<a href="?<?= TAG_ACTION ?>=<?= ACTION_DELETECOMMENT ?>&<?= TAG_IDCOMMENT ?>=<?= $data->getId() ?>" class="delete_comment">Supprimer</a>
 		    </div>
 		</div>
 	<?php

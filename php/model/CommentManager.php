@@ -9,7 +9,7 @@
 
 
 /**
- * Classe Commentmanager
+ * Classe CommentManager
  *
  * Classe contenant le modèle de gestion des commentaires
  */

@@ -94,7 +94,7 @@ class UserManager extends Manager
         try {
             // Connexion à la base de données
             $db = $this->dbConnect();
-            // Requête SQL INSERT INTO pour ajouter le nouvel utilisateur à la base de données
+            // Requête SQL SELECT pour sélectionner un utilisateur selon son id dans la BDD
             $req = $db->prepare('SELECT login, username, password, profile_id FROM user WHERE id = ?');
             $res = $req->execute(array($idUser));
 

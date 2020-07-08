@@ -41,12 +41,18 @@ class UserController
 	{
 		// Vérifie si le formulaire d'inscription a été correctement rempli
 		if (strcmp($password, $passwordConfirmation) == 0 && !empty($login) && !empty($pseudo) && !empty($password) && !empty($passwordConfirmation)) {
+			// Création d'une instance ProfileManager
+			$profile = new ProfileManager;
+			// Récupérantion d'une instance de profil utilisateur
+			$profileData = $profile->getProfileById(2);
+			// Récupération de l'identifiant du profil
+			$profileId = $profileData->getId();
 			// Création d'un objet User avec ses données dans un tableau
 			$user = new User([
 				'login' => $login,
 	            'username' => $pseudo, 
 	            'password' => $password,
-	            'profile' => 2
+	            'profile' => $profileId
 			]);
 
 			// Création d'un objet UserManager

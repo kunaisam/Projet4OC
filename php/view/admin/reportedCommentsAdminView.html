@@ -12,15 +12,19 @@
 	foreach($comments as $data)
 	{
 	?>
-	    <div class="article">
+	    <div class="admin_comment_box">
 	        <div>
-	            <em>le <?= $data->getDate() ?></em>
+	            <strong><?= $data->getUser()->getUsername() ?></strong><em> le <?= $data->getDate() ?></em>
 	        </div>
 		                
 	    	<div>
 		        <p class="content_list_post_view">
 		           	<?= $data->getContent() ?>
 		        </p>
+		    </div>
+		    <div class="edit_comments_box">
+		    	<a href="#" class="normalise_comment">Normaliser</a>
+		    	<a href="#" class="delete_comment">Supprimer</a>
 		    </div>
 		</div>
 	<?php

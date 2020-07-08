@@ -43,6 +43,8 @@ class CommentManager extends Manager
                 $comment = new Comment($commentData);
                 // Instancie une classe User à partir de l'identifiant de la personne ayant commenté
                 $user = UserManager::getUserManager()->getUserById($commentData["user_id"]);
+                // Intégration de l'id du post dans l'instance Comment
+                $comment->setArticles($postId);
                 // Intégration de l'instance User dans l'instance Comment
                 $comment->setUser($user);
                 // Retourne la nouvelle instance $comment dans le tableau $listComments.
@@ -52,6 +54,34 @@ class CommentManager extends Manager
         $req->closeCursor();
 
         return $listComments;
+    }
+
+    /**
+     * Méthode permettant de signaler les commentaires
+     *
+     * @param Integer $id contient l'identifiant du commentaire sélectionné
+     */
+    public function reportComment($id)
+    {
+        // Connexion à la base de données
+        $db = $this->dbConnect();
+        // Création d'un objet Comment avec ses données dans un tableau
+        $commentInstance = new Comment([
+            'id' => $id,
+            'reported' => 2
+        ]);
+        // Attribution de l'id du commentaire à la variable $idComment
+        $idComment = $commentInstance->getId();
+        // Attribution du signalement du commentaire à la variable $reported
+        $reported = $commentInstance->getReported();
+
+        // Requête SQL pour mettre à jour le signalement du commmentaire
+        $req = $db->prepare('UPDATE comment SET reported = :reported WHERE id = :id');
+        // Attribution des variables à la requête
+        $req->execute(array(
+            'id' => $idComment,
+            'reported' => $reported
+        ));
     }
 
     /**
@@ -76,6 +106,10 @@ class CommentManager extends Manager
                 $commentData = $result_array[$result_array_id];
                 // Création d'une instance de la classe Comment avec les valeurs contenues dans $commentData
                 $comment = new Comment($commentData);
+                // Instancie une classe User à partir de l'identifiant de la personne ayant commenté
+                $user = UserManager::getUserManager()->getUserById($commentData["user_id"]);
+                // Intégration de l'instance User dans l'instance Comment
+                $comment->setUser($user);
                 // Retourne la nouvelle instance $comment dans le tableau $listComments.
                 array_push($listComments, $comment);
             }

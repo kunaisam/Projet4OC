@@ -30,6 +30,21 @@ class CommentController
 	}
 
 	/**
+     * Méthode permettant de signaler les commentaires
+     *
+     * @param Integer $id contient l'identifiant du commentaire sélectionné
+     */
+	public function reportComment($id)
+	{
+		// Création d'un objet $commentManager
+		$commentManager = new CommentManager();
+		// Appel de la fonction reportComment() de cet objet avec l'identifiant du commentaire en paramètre
+		$comment = $commentManager->reportComment($id);
+
+		return $comment;
+	}
+
+	/**
      * Méthode permettant d'appeler les commentaires signalés sélectionnés à partir du CommentManager et d'envoyer ses valeurs au routeur
      *
      */

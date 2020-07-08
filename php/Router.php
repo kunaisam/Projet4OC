@@ -199,7 +199,7 @@ class Router
                 break;
 
             /**
-             * Action enclenchée à lors du clic sur le bouton Commentaires signalés de la page administrateur
+             * Action enclenchée lors du clic sur le bouton Commentaires signalés de la page administrateur
              *
              */
             case ACTION_COMMENTSADMIN:
@@ -207,6 +207,32 @@ class Router
                 $comments = $commentController->getReportedComments();
                 // Affichage de la vue administrateur de modération des commentaires
                 $ViewController->renderAdmin(['reportedCommentsAdminView'], ['comments' => $comments, 'title' => 'Commentaires Signalés']);
+                break;
+
+            /**
+             * Action enclenchée lors du signalement d'un commentaire
+             *
+             */
+            case ACTION_REPORTCOMMENT:
+                // Récupération de l'id du commentaire à signaler
+                $id = $_GET['id'];
+                // Signalement d'un commentaire
+                $comments = $commentController->reportComment($id);
+                // Opérateur ternaire : vérifie si une valeur TAG_IDPOST est envoyée par l'utilisateur, si oui, on attribue cette valeur à $idPost
+                $idPost = isset($_POST[TAG_IDPOST]) ? $_POST[TAG_IDPOST] : (isset($_GET[TAG_IDPOST]) ? $_GET[TAG_IDPOST] : null);
+                // Création de l'objet Post dans la variable $post
+                $post = $postController->post($idPost);
+                // Création d'objets Comment dans la variable $comments
+                $comments = $commentController->getComments($idPost);
+                // Vérifie si une session est active
+                if (isset($_SESSION['username'])) {
+                    // Affiche le post, ses commentaires et si la session est active, affiche la possibilité d'ajouter un commentaire. Affiche un message disant que le commentaire a été signalé.
+                    $ViewController->render(['postView', 'reportCommentSuccessView', 'addCommentView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $idPost]);
+                }
+                else {
+                    // Affiche seulement le post et ses commentaires. Affiche un message disant que le commentaire a été signalé.
+                    $ViewController->render(['postView', 'reportCommentSuccessView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $idPost]);
+                }
                 break;
 
             /**

@@ -203,6 +203,16 @@ class Router
                 break;
 
             /**
+             * Action enclenchée lors de la création d'un article
+             *
+             */
+            case ACTION_ADDPOST:
+                // Affichage de la vue de création d'article administrateur
+                $ViewController->renderAdmin(['addPostAdminView'], ['title' => 'Administration : Blog de Jean Forteroche']);
+
+                break;
+
+            /**
              * Action enclenchée lors de la supression d'un article
              *
              */

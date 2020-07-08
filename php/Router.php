@@ -163,6 +163,8 @@ class Router
                     $_SESSION['username'] = $user->getUsername();
                     // Création d'une variable de session contenant l'id de l'utilisateur
                     $_SESSION['userId'] = $user->getId();
+                    // Création d'une variable de session contenant l'id du profil de l'utilisateur
+                    $_SESSION['profileId'] = $user->getProfile();
                     // Récupération du contenu des articles de blog dans la variable $posts pour pouvoir les afficher sur la page d'accueil
                     $posts = $postController->indexListPosts();
                     // Affichage des vues une fois l'utilisateur/administrateur connecté

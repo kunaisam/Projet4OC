@@ -45,6 +45,10 @@ class ViewController
 			include( __DIR__ . '/../view/frontend/' . $keyView . '.html');
 		}
 
+		if (isset($_SESSION['profileId']) && $_SESSION['profileId'] == 1) {
+			include( __DIR__ . '/../view/frontend/adminLoginFooter.html');
+		}
+
 		include( __DIR__ . '/../view/frontend/footer.html');
 		die(ob_get_clean());
 	}

@@ -110,7 +110,7 @@ class User
 	    	$this->_password = $password;
 	    }
 	}
-	public function setProfile($profile)
+	public function setProfile_id($profile)
 	{
 	    $profile = (int) $profile;
 	    

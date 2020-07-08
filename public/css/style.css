@@ -240,6 +240,18 @@ h2
 	align-items: center;
 }
 
+/* ADMIN VIEW */
+
+#admin_login_footer
+{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 1em;
+	background-color: #404040;
+	border-top: 1px solid #000000;
+}
+
 #admin_login_button
 {
 	text-decoration: none;
@@ -256,8 +268,6 @@ h2
 {
 	background-color: #b0b0b0;
 }
-
-/* ADMIN VIEW */
 
 #admin_top_bar
 {

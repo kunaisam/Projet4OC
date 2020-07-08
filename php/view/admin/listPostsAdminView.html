@@ -1,0 +1,27 @@
+<section>
+	<div id="block_articles">
+		<?php
+		foreach($posts as $data)
+		{
+		?>
+		    <div class="article_admin">
+		        <div>
+		            <span class="title_list_post"><?= $data->getTitle() ?></span>
+		            <em>le <?= $data->getDate() ?></em>
+		        </div>
+		                
+		        <div>
+		        	<p class="content_list_post_view">
+		            	<?= $data->getContent() ?>
+		            </p>
+		        </div>
+		    </div>
+		    <div class="edit_delete_post_box">
+		    	<a href="?<?= TAG_ACTION ?>=<?= ACTION_POST ?>&<?= TAG_IDPOST ?>=<?= $data->getId() ?>" class="edit_post_button">Modifier</a>
+		    	<a href="#"class="delete_post_button">Supprimer</a>
+		    </div>
+		<?php
+		}
+		?>
+	</div>
+</section>

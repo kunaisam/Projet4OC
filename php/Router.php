@@ -194,8 +194,10 @@ class Router
              *
              */
             case ACTION_LOGINADMIN:
+                // Création des instances de chaque article
+                $posts = $postController->articleListPosts();
                 // Affichage de la vue administrateur
-                $ViewController->renderAdmin(['adminView'], ['title' => 'Administration : Blog de Jean Forteroche']);
+                $ViewController->renderAdmin(['adminView', 'listPostsAdminView'], ['posts' => $posts, 'title' => 'Administration : Blog de Jean Forteroche']);
                 break;
 
             /**

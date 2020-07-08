@@ -286,6 +286,61 @@ h2
 	background-color: #b0b0b0;
 }
 
+.article_admin
+{
+	width: 80%;
+	text-align: center;
+	text-decoration: none;
+	color: black;
+	padding: 1em;
+	margin: auto;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+.edit_delete_post_box
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	padding-bottom: 1em;
+	border-bottom: 1px solid #AFAFAF;
+}
+
+.edit_post_button
+{
+	text-decoration: none;
+	padding: 1em;
+	color: #000000;
+	background-color: #42FF58;
+	border: 1px solid #AFAFAF;
+	border-radius: 10px;
+	box-shadow: 1px 1px 1px #777777;
+	transition: all 0.3s ease-in-out;
+}
+
+.edit_post_button:hover
+{
+	background-color: #00AD11;
+}
+
+.delete_post_button
+{
+	text-decoration: none;
+	padding: 1em;
+	color: #000000;
+	background-color: #FF6060;
+	border: 1px solid #AFAFAF;
+	border-radius: 10px;
+	box-shadow: 1px 1px 1px #777777;
+	transition: all 0.3s ease-in-out;
+}
+
+.delete_post_button:hover
+{
+	background-color: #D30000;
+}
+
 /* ADMIN COMMENTS VIEW */
 
 #reported_comments_text

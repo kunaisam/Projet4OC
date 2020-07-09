@@ -58,19 +58,7 @@ class Router
                 $idPost = isset($_POST[TAG_IDPOST]) ? $_POST[TAG_IDPOST] : (isset($_GET[TAG_IDPOST]) ? $_GET[TAG_IDPOST] : null);
                 // Vérifie si $idPost contient une valeur
                 if (!empty($idPost)) {
-                    // Création de l'objet Post dans la variable $post
-                    $post = $postController->post($idPost);
-                    // Création d'objets Comment dans la variable $comments
-                    $comments = $commentController->getComments($idPost);
-                    // Vérifie si une session est active
-                    if (isset($_SESSION['username'])) {
-                        // Affiche le post, ses commentaires et si la session est active, affiche la possibilité d'ajouter un commentaire
-                        $ViewController->render(['postView', 'addCommentView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $idPost]);
-                    }
-                    else {
-                        // Affiche seulement le post et ses commentaires
-                        $ViewController->render(['postView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $idPost]);
-                    }
+                    $postController->displayPost($idPost, isset($_SESSION['username']));
                 }
                 else {
                     echo 'Erreur : aucun identifiant de billet envoyé';
@@ -208,7 +196,7 @@ class Router
              */
             case ACTION_ADDPOST:
                 // Affichage de la vue de création d'article administrateur
-                $ViewController->renderAdmin(['addPostAdminView'], ['title' => 'Administration : Blog de Jean Forteroche']);
+                $ViewController->renderAdmin(['addPostAdminView'], ['title' => 'Nouvel Article']);
 
                 break;
 

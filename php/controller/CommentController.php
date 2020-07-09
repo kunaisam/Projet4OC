@@ -19,12 +19,12 @@ class CommentController
      *
      * @param Integer $id contient l'identifiant du post sélectionné
      */
-	public function getComments($id)
+	public function getCommentsFromPost($idPost)
 	{
 		// Création d'un objet $commentManager
 		$commentManager = new CommentManager();
 		// Appel de la fonction getComments() de cet objet avec l'identifiant du post en paramètre
-		$comments = $commentManager->getComments($id);
+		$comments = $commentManager->getComments($idPost);
 
 		return $comments;
 	}

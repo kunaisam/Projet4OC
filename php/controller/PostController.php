@@ -47,7 +47,7 @@ class PostController
      *
      * @param Integer $id contient l'identifiant du post sélectionné
      */
-	public function post($id)
+	public function getPostById($id)
 	{
 		// Création d'un objet $postManager
 		$postManager = new PostManager();
@@ -70,5 +70,25 @@ class PostController
 	    $post = $postManager->deletePost($idPost);
 
 	    return $post;
+	}
+
+	public function displayPost($idPost, $isActiveSession)
+	{
+		$postController = new PostController();
+        $commentController = new CommentController();
+		$ViewController = new ViewController();
+		// Création de l'objet Post dans la variable $post
+        $post = $postController->getPostById($idPost);
+        // Création d'objets Comment dans la variable $comments
+        $comments = $commentController->getCommentsFromPost($idPost);
+        // Vérifie si une session est active
+        if ($isActiveSession) {
+        	// Affiche le post, ses commentaires et si la session est active, affiche la possibilité d'ajouter un commentaire
+            $ViewController->render(['postView', 'addCommentView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $idPost]);
+         }
+        else {
+            // Affiche seulement le post et ses commentaires
+            $ViewController->render(['postView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $idPost]);
+        }
 	}
 }

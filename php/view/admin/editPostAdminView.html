@@ -5,7 +5,7 @@
 
 <section>
 	<h2>Modifier un article</h2>
-    <form method="post" action="?<?= TAG_ACTION ?>=<?= ACTION_UPDATEPOST ?>">
+    <form method="post" action="?<?= TAG_ACTION ?>=<?= ACTION_UPDATEPOST ?>&<?= TAG_IDPOST ?>=<?= $post->getId() ?>">
     	<label  for="title">Titre</label>
 	    <input type="text" name="title" value="<?= $post->getTitle() ?>" class="id_login" />
 	    <br />

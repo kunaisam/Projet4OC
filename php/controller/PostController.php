@@ -92,6 +92,29 @@ class PostController
 	}
 
 	/**
+     * Méthode permettant de modifier des articles
+     *
+     * @param Integer $idPost contient l'identifiant de l'article sélectionné
+     * @param String $title contient la valeur entrée par l'administrateur dans la partie Titre
+	 * @param String $myTextArea contient la valeur entrée par l'utilisateur dans la partie Contenu (interface Wysiwyg)
+     */
+	public function updatePost($idPost, $title, $myTextArea)
+	{
+		// Vérifie si le formulaire de modifiaction d'article a été correctement rempli
+		if (!empty($title) && !empty($myTextArea)) {
+			// Création d'un objet $postManager
+			$postManager = new PostManager();
+			// Appel de la fonction updatePost() de cet objet avec l'identifiant, le titre et le texte de l'article en paramètres
+			$post = $postManager->updatePost($idPost, $title, $myTextArea);
+
+			return $post;
+		}
+		else {
+			return NULL;
+		}
+	}
+
+	/**
      * Méthode permettant de supprimer l'article de blog sélectionné à partir du PostManager
      *
      * @param Integer $idPost contient l'identifiant du post sélectionné

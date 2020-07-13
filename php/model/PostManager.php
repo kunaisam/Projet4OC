@@ -136,6 +136,42 @@ class PostManager extends Manager
     }
 
     /**
+     * Méthode permettant de modifier des articles
+     *
+     * @param Integer $idPost contient l'identifiant de l'article sélectionné
+     * @param String $title contient la valeur entrée par l'administrateur dans la partie Titre
+     * @param String $myTextArea contient la valeur entrée par l'utilisateur dans la partie Contenu (interface Wysiwyg)
+     */
+    public function updatePost($idPost, $title, $myTextArea)
+    {
+        // Connexion à la base de données
+        $db = $this->dbConnect();
+        // Création d'un objet Article avec ses données dans un tableau
+        $articleInstance = new Article([
+            'id' => $idPost,
+            'title' => $title,
+            'content' => $myTextArea
+        ]);
+        // Attribution de l'id de l'article à la variable $idArticle
+        $idArticle = $articleInstance->getId();
+        // Attribution du titre de l'article à la variable $title
+        $title = $articleInstance->getTitle();
+        // Attribution du contenu de l'article à la variable $content
+        $content = $articleInstance->getContent();
+
+        // Requête SQL pour mettre à jour l'article
+        $req = $db->prepare('UPDATE article SET title = :title, content = :content WHERE id = :id');
+        // Attribution des variables à la requête
+        $req->execute(array(
+            'id' => $idArticle,
+            'title' => $title,
+            'content' => $content
+        ));
+        
+        return $req;
+    }
+
+    /**
      * Méthode permettant de supprimer un article
      *
      * @param Integer $idPost contient l'identifiant de l'article sélectionné

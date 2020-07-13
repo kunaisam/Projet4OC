@@ -208,7 +208,7 @@ class Router
              */
             case ACTION_ADDPOST:
                 // Affichage de la vue de création d'article administrateur
-                $ViewController->renderAdmin(['addPostAdminView'], ['title' => 'Administration : Blog de Jean Forteroche']);
+                $ViewController->renderAdmin(['addPostAdminView'], ['title' => 'Nouvel article']);
                 break;
 
             /**
@@ -233,7 +233,7 @@ class Router
                 else
                 {
                     // Affichage de la vue de création d'article administrateur
-                    $ViewController->renderAdmin(['addPostAdminView', 'addPostFailureView'], ['title' => 'Administration : Blog de Jean Forteroche']);
+                    $ViewController->renderAdmin(['addPostAdminView', 'addPostFailureView'], ['title' => 'Nouvel article']);
                 }
                 break;
 
@@ -247,7 +247,7 @@ class Router
                 // Sélection de l'article à modifier
                 $post = $postController->post($idPost);
                 // Affichage de la vue de modification d'article administrateur
-                $ViewController->renderAdmin(['editPostAdminView'], ['post' => $post, 'title' => 'Administration : Blog de Jean Forteroche']);
+                $ViewController->renderAdmin(['editPostAdminView'], ['post' => $post, 'title' => 'Modifier un article']);
                 break;
 
             /**
@@ -257,7 +257,27 @@ class Router
             case ACTION_UPDATEPOST:
                 // Opérateur ternaire : vérifie si une valeur TAG_IDPOST est envoyée par l'utilisateur, si oui, on attribue cette valeur à $idPost
                 $idPost = isset($_POST[TAG_IDPOST]) ? $_POST[TAG_IDPOST] : (isset($_GET[TAG_IDPOST]) ? $_GET[TAG_IDPOST] : null);
-                var_dump($idPost); // en attendant
+                // Récupération de champs du formulaire dans les variables $title et $myTextArea
+                $title = $_POST['title'];
+                $myTextArea = $_POST['mytextarea'];
+                // Modification d'un article
+                $updatePost = $postController->updatePost($idPost, $title, $myTextArea);
+                // Si $updatePost n'est pas NULL, donc si les champs du formulaire ont été remplis correctement
+                if ($updatePost) 
+                {
+                    // Sélection de l'article à modifier
+                    $post = $postController->post($idPost);
+                    // Affichage de la vue de modification d'article administrateur
+                    $ViewController->renderAdmin(['editPostAdminView', 'editPostSuccessView'], ['post' => $post, 'title' => 'Modifier un article']);
+                break;
+                }
+                else
+                {
+                    // Sélection de l'article à modifier
+                    $post = $postController->post($idPost);
+                    // Affichage de la vue de modification d'article administrateur
+                    $ViewController->renderAdmin(['editPostAdminView', 'addPostFailureView'], ['post' => $post, 'title' => 'Modifier un article']);
+                }
                 break;
 
             /**

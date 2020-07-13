@@ -18,6 +18,8 @@ define( "ACTION_LOGINFORM", "loginForm");
 
 define("ACTION_ADDPOST", "addPost");
 define("ACTION_CREATENEWPOST", "createNewPost");
+define("ACTION_EDITPOST", "editPost");
+define("ACTION_UPDATEPOST", "updatePost");
 define("ACTION_DELETEPOST", "deletePost");
 
 define("ACTION_ADDCOMMENT", "addComment");

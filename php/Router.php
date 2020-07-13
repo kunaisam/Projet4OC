@@ -238,6 +238,29 @@ class Router
                 break;
 
             /**
+             * Action enclenchée lors du clic sur le bouton Modifier de la page administrateur
+             *
+             */
+            case ACTION_EDITPOST:
+                // Opérateur ternaire : vérifie si une valeur TAG_IDPOST est envoyée par l'utilisateur, si oui, on attribue cette valeur à $idPost
+                $idPost = isset($_POST[TAG_IDPOST]) ? $_POST[TAG_IDPOST] : (isset($_GET[TAG_IDPOST]) ? $_GET[TAG_IDPOST] : null);
+                // Sélection de l'article à modifier
+                $post = $postController->post($idPost);
+                // Affichage de la vue de modification d'article administrateur
+                $ViewController->renderAdmin(['editPostAdminView'], ['post' => $post, 'title' => 'Administration : Blog de Jean Forteroche']);
+                break;
+
+            /**
+             * Action enclenchée lors de la modification d'un article (bouton Publier)
+             *
+             */
+            case ACTION_UPDATEPOST:
+                // Opérateur ternaire : vérifie si une valeur TAG_IDPOST est envoyée par l'utilisateur, si oui, on attribue cette valeur à $idPost
+                $idPost = isset($_POST[TAG_IDPOST]) ? $_POST[TAG_IDPOST] : (isset($_GET[TAG_IDPOST]) ? $_GET[TAG_IDPOST] : null);
+                var_dump($idPost); // en attendant
+                break;
+
+            /**
              * Action enclenchée lors de la supression d'un article
              *
              */

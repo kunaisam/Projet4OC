@@ -1,0 +1,18 @@
+<section id="admin_top_bar">
+	<a href="?<?= TAG_ACTION ?>=<?= ACTION_LOGINADMIN ?>" class="top_bar_link">Affichage accueil</a>
+	<a href="?<?= TAG_ACTION ?>=<?= ACTION_HOME ?>" class="top_bar_link">Affichage Utilisateur</a>
+</section>
+
+<section>
+	<h2>Modifier un article</h2>
+    <form method="post" action="?<?= TAG_ACTION ?>=<?= ACTION_UPDATEPOST ?>">
+    	<label  for="title">Titre</label>
+	    <input type="text" name="title" value="<?= $post->getTitle() ?>" class="id_login" />
+	    <br />
+	    <label  for="mytextarea">Contenu</label>
+	    <br />
+	    <textarea name="mytextarea" id="mytextarea"><?= $post->getContent() ?></textarea>
+	    <br />
+		<input type="submit" value="Publier" />
+    </form>
+</section>

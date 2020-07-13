@@ -57,33 +57,6 @@ class CommentManager extends Manager
     }
 
     /**
-     * Méthode permettant d'appeler un commentaire
-     *
-     * @param Integer $idComment contient l'identifiant du commentaire sélectionné
-     */
-    public function getComment($idComment)
-    {
-        // Connexion à la base de données
-        $db = $this->dbConnect();
-        // Requête SQL pour récupérer les données des commentaires sélectionnés
-        $req = $db->prepare('SELECT comment.id, comment.date, comment.content, comment.user_id FROM comment WHERE comment.id = ?');
-        // Envoi du paramètre $idComment à la requête pour sélectionner le bon commentaire
-        $req->execute(array($idComment));
-        // PDO::FETCH_ASSOC renvoie les valeurs sous forme d'un tableau associatif.
-        $commentData = $req->fetch(PDO::FETCH_ASSOC);
-        // Création d'une instance de la classe Comment avec les valeurs contenues dans $commentData
-        $comment = new Comment($commentData);
-        // Instancie une classe User à partir de l'identifiant de la personne ayant commenté
-        $user = UserManager::getUserManager()->getUserById($commentData["user_id"]);
-        // Intégration de l'instance User dans l'instance Comment
-        $comment->setUser($user);
-        // On laisse l’id du post/article en valeur numérique (pas de création d’objet de type Article)
-        $req->closeCursor();
-
-        return $comment;
-    }
-
-    /**
      * Méthode permettant de signaler les commentaires
      *
      * @param Integer $id contient l'identifiant du commentaire sélectionné

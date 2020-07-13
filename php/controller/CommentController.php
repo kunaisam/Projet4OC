@@ -19,12 +19,12 @@ class CommentController
      *
      * @param Integer $id contient l'identifiant du post sélectionné
      */
-	public function getCommentsFromPost($idPost)
+	public function getComments($id)
 	{
 		// Création d'un objet $commentManager
 		$commentManager = new CommentManager();
 		// Appel de la fonction getComments() de cet objet avec l'identifiant du post en paramètre
-		$comments = $commentManager->getComments($idPost);
+		$comments = $commentManager->getComments($id);
 
 		return $comments;
 	}
@@ -33,44 +33,13 @@ class CommentController
      * Méthode permettant de signaler les commentaires
      *
      * @param Integer $id contient l'identifiant du commentaire sélectionné
-     * @param Boolean $isSessionActive vérifie si une session est active
      */
-	public function reportComment($id, $isSessionActive)
+	public function reportComment($id)
 	{
 		// Création d'un objet $commentManager
 		$commentManager = new CommentManager();
-		$postController = new PostController();
-		$commentController = new CommentController();
 		// Appel de la fonction reportComment() de cet objet avec l'identifiant du commentaire en paramètre
-		if ($commentManager->reportComment($id)) {
-			$comment = $commentController->getCommentById($id);
-			// Création de l'objet Post dans la variable $post
-			$post = $postController->getPostById($comment->getArticles()); // il faudrait renommer getArticles en getArticle
-			// Création d'objets Comment dans la variable $comments
-			$comments = $post->getComments();
-			// Vérifie si une session est active
-			if ($isSessionActive) {
-				// Affiche le post, ses commentaires et si la session est active, affiche la possibilité d'ajouter un commentaire. Affiche un message disant que le commentaire a été signalé.
-				$ViewController->render(['postView', 'reportCommentSuccessView', 'addCommentView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $post->getId()]);
-			}
-			else {
-				// Affiche seulement le post et ses commentaires. Affiche un message disant que le commentaire a été signalé.
-				$ViewController->render(['postView', 'reportCommentSuccessView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $post->getId()]);
-			}
-		}
-	}
-
-	/**
-     * Méthode permettant de sélectionner un commentaire
-     *
-     * @param Integer $idComment contient l'identifiant du commentaire
-     */
-	public function getCommentById($idComment)
-	{
-		// Création d'un objet $commentManager
-		$commentManager = new CommentManager();
-		// Appel de la fonction getComment() de cet objet avec l'identifiant du post en paramètre
-		$comment = $commentManager->getComment($idComment);
+		$comment = $commentManager->reportComment($id);
 
 		return $comment;
 	}
@@ -120,29 +89,31 @@ class CommentController
 	}
 
 	/**
-     * Méthode permettant de créer un commentaire à partir du CommentManager
+     * Méthode permettant d'ajouter un commentaire à partir du CommentManager
      *
      * @param Integer $postId contient l'identifiant du post sélectionné
      * @param String $comment contient le commentaire envoyé par l'utilisateur
-     * @param Integer $userId contient l'identifiant de l'utilisateur qui envoie le commentaire
      */
-	public function createComment($postId, $comment, $userId)
+	public function addComment($postId, $comment)
 	{
-		// Création d'un objet Comment avec ses données dans un tableau
-		$commentInstance = new Comment([
-			'articles' => $postId,
-			'user' => $userId,
-			'content' => $comment,
-			'reported' => 1
-		]);
-		// Création d'un objet CommentManager
-		$commentManager = new CommentManager();
-		// Création d'un nouveau commentaire avec la méthode postComment et l'objet $commentInstance en paramètre
-		if ($commentManager->postComment($commentInstance)) {
-			return $commentInstance;
+		// Vérifie si les champs ont été correctement remplis
+		if (!empty($postId) && !empty($comment)) {
+			// Création d'un objet Comment avec ses données dans un tableau
+			$commentInstance = new Comment([
+				'articles' => $postId,
+	            'user' => $_SESSION['userId'], 
+	            'content' => $comment,
+	            'reported' => 1
+			]);
+			// Création d'un objet CommentManager
+			$commentManager = new CommentManager();
+			// Création d'un nouveau commentaire avec la méthode postComment et l'objet $commentInstance en paramètre
+			$commentInstancePost = $commentManager->postComment($commentInstance);
+
+			return $commentInstancePost;
 		}
 		else {
-			return null;
+			return NULL;
 		}
 	}
 }

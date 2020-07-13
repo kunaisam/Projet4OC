@@ -16,7 +16,8 @@ define( "ACTION_LISTPOSTS", "listposts");
 define( "ACTION_REGISTRATIONFORM", "registrationForm");
 define( "ACTION_LOGINFORM", "loginForm");
 
-define("ACTION_ADDPOST", "deletePost");
+define("ACTION_ADDPOST", "addPost");
+define("ACTION_CREATENEWPOST", "createNewPost");
 define("ACTION_DELETEPOST", "deletePost");
 
 define("ACTION_ADDCOMMENT", "addComment");

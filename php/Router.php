@@ -192,7 +192,7 @@ class Router
                 break;
 
             /**
-             * Action enclenchée à lors du clic sur le bouton Connexion Administrateur de la page connexion
+             * Action enclenchée à lors du clic sur le bouton Connexion Administrateur
              *
              */
             case ACTION_LOGINADMIN:
@@ -203,13 +203,38 @@ class Router
                 break;
 
             /**
-             * Action enclenchée lors de la création d'un article
+             * Action enclenchée pour aller sur la page de création d'article
              *
              */
             case ACTION_ADDPOST:
                 // Affichage de la vue de création d'article administrateur
                 $ViewController->renderAdmin(['addPostAdminView'], ['title' => 'Administration : Blog de Jean Forteroche']);
+                break;
 
+            /**
+             * Action enclenchée pour créer un nouvel article
+             *
+             */
+            case ACTION_CREATENEWPOST:
+                // Récupération de champs du formulaire dans les variables $title et $myTextArea
+                $title = $_POST['title'];
+                $myTextArea = $_POST['mytextarea'];
+                // Création d'un nouvel article avec les données des variables
+                $newPost = $postController->createNewPost($title, $myTextArea);
+                // Si $newPost n'est pas NULL, donc si les champs du formulaire ont été remplis correctement
+                if ($newPost) 
+                {
+                    // Création des instances de chaque article
+                    $posts = $postController->articleListPosts();
+                    // Affichage de la vue administrateur
+                    $ViewController->renderAdmin(['adminView', 'listPostsAdminView'], ['posts' => $posts, 'title' => 'Administration : Blog de Jean Forteroche']);
+                break;
+                }
+                else
+                {
+                    // Affichage de la vue de création d'article administrateur
+                    $ViewController->renderAdmin(['addPostAdminView', 'addPostFailureView'], ['title' => 'Administration : Blog de Jean Forteroche']);
+                }
                 break;
 
             /**

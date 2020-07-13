@@ -58,6 +58,40 @@ class PostController
 	}
 
 	/**
+	 * Méthode permettant de créer un utilisateur via la classe User
+	 *
+	 * @param String $title contient la valeur entrée par l'administrateur dans la partie Titre
+	 * @param String $myTextArea contient la valeur entrée par l'utilisateur dans la partie Contenu (interface Wysiwyg)
+	 */
+	public function createNewPost($title, $myTextArea)
+	{
+		// Vérifie si le formulaire de création d'article a été correctement rempli
+		if (!empty($title) && !empty($myTextArea)) {
+			// Création d'une instance UserManager
+			$user = new UserManager;
+			// Récupérantion d'une instance d'utilisateur
+			$userData = $user->getUserById(1);
+			// Récupération de l'identifiant de l'utilisateur
+			$userId = $userData->getId();
+			// Création d'un objet Article avec ses données dans un tableau
+			$article = new Article([
+				'title' => $title,
+	            'content' => $myTextArea, 
+	            'user' => $userId
+			]);
+			// Création d'un objet PostManager
+			$postManager = new PostManager();
+			// Création d'un nouvel article avec la méthode createNewPost du Postmanager et l'objet $article en paramètres
+			$newPost = $postManager->createNewPost($article);
+
+			return $newPost;
+		}
+		else {
+			return NULL;
+		}
+	}
+
+	/**
      * Méthode permettant de supprimer l'article de blog sélectionné à partir du PostManager
      *
      * @param Integer $idPost contient l'identifiant du post sélectionné

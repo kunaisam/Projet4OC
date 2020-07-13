@@ -95,7 +95,7 @@ class UserManager extends Manager
             // Connexion à la base de données
             $db = $this->dbConnect();
             // Requête SQL SELECT pour sélectionner un utilisateur selon son id dans la BDD
-            $req = $db->prepare('SELECT login, username, password, profile_id FROM user WHERE id = ?');
+            $req = $db->prepare('SELECT id, login, username, password, profile_id FROM user WHERE id = ?');
             $res = $req->execute(array($idUser));
 
             // Récupération des données de l'utilisateur dans la variable $userData

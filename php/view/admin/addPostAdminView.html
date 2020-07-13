@@ -4,8 +4,15 @@
 </section>
 
 <section>
-	<h2>TinyMCE Quick Start Guide</h2>
-    <form method="post">
-      <textarea id="mytextarea" name="mytextarea">Hello, World!</textarea>
+	<h2>Nouvel article</h2>
+    <form method="post" action="?<?= TAG_ACTION ?>=<?= ACTION_CREATENEWPOST ?>">
+    	<label  for="title">Titre</label>
+	    <input type="text" name="title" class="id_login" />
+	    <br />
+	    <label  for="mytextarea">Contenu</label>
+	    <br />
+	    <textarea name="mytextarea" id="mytextarea"></textarea>
+	    <br />
+		<input type="submit" value="Publier" />
     </form>
 </section>

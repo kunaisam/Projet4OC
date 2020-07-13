@@ -124,15 +124,16 @@ h2
 {
 	font-weight: bold;
 }
-
+/*
 .content_list_post_view
 {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	display: -webkit-box;
-	-webkit-line-clamp: 2; /* number of lines to show */
+	-webkit-line-clamp: 2; // number of lines to show
 	-webkit-box-orient: vertical;
 }
+*/
 
 /* SINGLE ARTICLE SECTION */
 

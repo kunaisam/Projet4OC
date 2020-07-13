@@ -105,6 +105,37 @@ class PostManager extends Manager
     }
 
     /**
+     * Méthode permettant de créer un article de blog et de l'incorporer dans la base de données
+     *
+     * @param Object $article contient l'instance de l'article qui va être ajouté en base de données
+     */
+    public function createNewPost(Article $article)
+    {
+        try {
+            // Connexion à la base de données
+            $db = $this->dbConnect();
+            // Requête SQL INSERT INTO pour ajouter le nouvel article à la base de données
+            $req = $db->prepare('INSERT INTO article(title, article.date, content, user_id) VALUES(:title, NOW(), :content, :user_id)');
+
+            // Création de variables avec les valeurs de l'objet Article
+            $title = $article->getTitle();
+            $content = $article->getContent();
+            $user_id = $article->getUser();
+
+            // Ajout des données de l'article à la base de données
+            $req->bindParam('title', $title, PDO::PARAM_STR);
+            $req->bindParam('content', $content, PDO::PARAM_STR);
+            $req->bindParam('user_id', $user_id, PDO::PARAM_INT);
+            $res = $req->execute();
+        }
+        catch (Exception $e) {
+            die($e);
+        }
+
+        return $req;
+    }
+
+    /**
      * Méthode permettant de supprimer un article
      *
      * @param Integer $idPost contient l'identifiant de l'article sélectionné

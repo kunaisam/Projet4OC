@@ -17,6 +17,7 @@ require( __DIR__ . '/config/config.php');
  */
 class Router
 {
+    // ECCCCCHHHEEEEEEEECCCCC
     /**
      * Méthode enclenchée à l'arrivée d'un visiteur sur le site et à chacune de ses actions
      *

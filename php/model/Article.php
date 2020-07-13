@@ -113,11 +113,6 @@ class Article
 	
 	public function setUser($user)
 	{
-	    $user = (int) $user;
-
-	    if ($user > 0)
-	    {
-	    	$this->_user = $user;
-	    }
+	    $this->_user = $user;
 	}
 }

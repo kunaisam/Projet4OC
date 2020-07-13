@@ -20,11 +20,12 @@ class Router
     /**
      * Méthode enclenchée à l'arrivée d'un visiteur sur le site et à chacune de ses actions
      *
-     */
-    public function load()
+     */      
+    public function load($a = null)
     {
-        // Opérateur ternaire : vérifie si une valeur TAG_ACTION existe, si oui, on attribue cette valeur à $action
-        $action = isset($_POST[TAG_ACTION]) ? $_POST[TAG_ACTION] : (isset($_GET[TAG_ACTION]) ? $_GET[TAG_ACTION] : null);
+        // Opérateur ternaire : vérifie si une valeur TAG_ACTION existe, si oui, on attribue cette valeur à $action  
+        // Si la valeur action est forcée ($a non null), elle est "prioritaire"        
+        $action =!empty($a)? $a: (isset($_POST[TAG_ACTION]) ? $_POST[TAG_ACTION] : (isset($_GET[TAG_ACTION]) ? $_GET[TAG_ACTION] : null));
 
         // Instanciation de tous les contrôleurs
         $controller = new Controller();
@@ -74,20 +75,11 @@ class Router
                 $idPost = isset($_POST[TAG_IDPOST]) ? $_POST[TAG_IDPOST] : (isset($_GET[TAG_IDPOST]) ? $_GET[TAG_IDPOST] : null);
                 // Récupère le commentaire posté
                 $comment = $_POST['comment'];
-                // Envoi du commentaire au CommentController
-                $newComment = $commentController->addComment($idPost, $comment);
-                // Création de l'objet Post dans la variable $post
-                $post = $postController->post($idPost);
-                // Création d'objets Comment dans la variable $comments
-                $comments = $commentController->getComments($idPost);
-                // Si le nouveau commentaire ne vaut pas NULL
-                if ($newComment) {
-                    // Affiche le post, ses commentaires et affiche la possibilité d'ajouter un commentaire
-                    $ViewController->render(['postView', 'addCommentView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $idPost]);
+                if (!empty($idPost) && !empty($comment)) {
+                    $postController->addComment($idPost, $comment, $_SESSION['userId']);
                 }
                 else {
-                    // Affiche le post, ses commentaires, le message d'échec d'envoi du commentaire et affiche la possibilité d'ajouter un commentaire
-                    $ViewController->render(['postView', 'addCommentFailedView', 'addCommentView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $idPost]);
+                    echo 'Erreur : aucun identifiant de billet ou de commentaire envoyé';
                 }
                 break;
 
@@ -173,10 +165,8 @@ class Router
                 // Destruction de la session
                 $_SESSION = array();
                 session_destroy();
-                // Récupération du contenu des articles de blog dans la variable $posts pour pouvoir les afficher sur la page d'accueil
-                $posts = $postController->indexListPosts();
-                // Affichage des vues après déconnexion
-                $ViewController->render(['indexView', 'listPostsView'], ['posts' => $posts, 'title' => 'Blog de Jean Forteroche']);
+                $this->load(ACTION_HOME);
+                // On relance le routeur mais pour faire l’affichage par défaut
                 break;
 
             /**
@@ -233,24 +223,9 @@ class Router
              */
             case ACTION_REPORTCOMMENT:
                 // Opérateur ternaire : vérifie si une valeur TAG_IDCOMMENT est envoyée par l'utilisateur, si oui, on attribue cette valeur à $id
-                $id = isset($_POST[TAG_IDCOMMENT]) ? $_POST[TAG_IDCOMMENT] : (isset($_GET[TAG_IDCOMMENT]) ? $_GET[TAG_IDCOMMENT] : null);
+                $id = isset($_POST[TAG_IDCOMMENT]) ? $_POST[TAG_IDCOMMENT] : (isset($_GET[TAG_IDCOMMENT]) ? $_GET[TAG_IDCOMMENT] :null);
                 // Signalement d'un commentaire
-                $comments = $commentController->reportComment($id);
-                // Opérateur ternaire : vérifie si une valeur TAG_IDPOST est envoyée par l'utilisateur, si oui, on attribue cette valeur à $idPost
-                $idPost = isset($_POST[TAG_IDPOST]) ? $_POST[TAG_IDPOST] : (isset($_GET[TAG_IDPOST]) ? $_GET[TAG_IDPOST] : null);
-                // Création de l'objet Post dans la variable $post
-                $post = $postController->post($idPost);
-                // Création d'objets Comment dans la variable $comments
-                $comments = $commentController->getComments($idPost);
-                // Vérifie si une session est active
-                if (isset($_SESSION['username'])) {
-                    // Affiche le post, ses commentaires et si la session est active, affiche la possibilité d'ajouter un commentaire. Affiche un message disant que le commentaire a été signalé.
-                    $ViewController->render(['postView', 'reportCommentSuccessView', 'addCommentView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $idPost]);
-                }
-                else {
-                    // Affiche seulement le post et ses commentaires. Affiche un message disant que le commentaire a été signalé.
-                    $ViewController->render(['postView', 'reportCommentSuccessView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $idPost]);
-                }
+                $commentController->reportComment($id, isset($_SESSION['username']));
                 break;
 
             /**

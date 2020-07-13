@@ -45,16 +45,49 @@ class PostController
 	/**
      * Méthode permettant d'appeler l'article de blog sélectionné à partir du PostManager et d'envoyer ses valeurs au routeur
      *
-     * @param Integer $id contient l'identifiant du post sélectionné
+     * @param Integer $idPost contient l'identifiant du post sélectionné
      */
-	public function getPostById($id)
+	public function getPostById($idPost)
 	{
 		// Création d'un objet $postManager
 		$postManager = new PostManager();
-		// Appel de la fonction getPost() de cet objet avec l'identifiant du post en paramètre
-	    $post = $postManager->getPost($id);
+		// Appel de la fonction getPost() de cet objet avec l'identifiant du post en paramètre 
+		$post = $postManager->getPost($idPost);
+		// à ce moment là, le champ $_user de la classe Article contient seulement la valeur numérique, id de l’utilisateur
+		$user = UserManager::getUserManager()->getUserById($post->getUser());
+		// On réinjecte l’objet User dans l’objet $post
+		$post->setUser($user);
 
-	    return $post;
+		return $post;
+	}
+
+	/**
+     * Méthode permettant d'ajouter un commentaire à une publication
+     *
+     * @param Integer $postId contient l'identifiant du post sélectionné
+     * @param String $comment contient le commentaire à ajouter
+     * @param Integer $idUser contient l'identifiant de l'utilisateur sélectionné
+     */	
+	public function addComment($postId, $comment, $idUser)
+	{
+		$commentController = new CommentController();
+		$postController = new PostController();
+		$viewController = new ViewController();
+		// Envoi du commentaire au CommentController
+		$newComment = $commentController->createComment($idPost, $comment, $idUser);
+		// Création de l'objet Post dans la variable $post
+		$post = $postController->getPostById($idPost);
+		// Récupération des commentaires du post
+		$comments = $post->getComments($idPost);
+		// Si le nouveau commentaire ne vaut pas NULL
+		if (!empty($newComment)) {
+			// Affiche le post, ses commentaires et affiche la possibilité d'ajouter un commentaire
+			$ViewController->render(['postView', 'addCommentView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $idPost]);
+		}
+		else {
+	        // Affiche le post, ses commentaires, le message d'échec d'envoi du commentaire et affiche la possibilité d'ajouter un commentaire
+	        $ViewController->render(['postView', 'addCommentFailedView', 'addCommentView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $idPost]);
+	    }               
 	}
 
 	/**

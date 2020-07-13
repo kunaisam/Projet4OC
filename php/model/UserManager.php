@@ -29,8 +29,8 @@ class UserManager extends Manager
      * @param String $login contient la valeur entrée par l'utilisateur dans la partie Identifiant du fomulaire de connexion
      * @param String $password contient la valeur entrée par l'utilisateur dans la partie Mot de passe du fomulaire de connexion
      */
-    public function getUser($login, $password)
-    {
+    public function getUser($login, $password)    
+    {        
         // Connexion à la base de données
         $db = $this->dbConnect();
         // Requête SQL pour récupérer les données d'un utilisateur, login et password sont inconnues
@@ -38,17 +38,21 @@ class UserManager extends Manager
         // Envoi des paramètres $login et $password à la requête pour sélectionner le bon utilisateur
         $req->execute(array($login, $password));
         // PDO::FETCH_ASSOC renvoie les valeurs sous forme d'un tableau associatif.
-        $result_array = $req->fetchAll(PDO::FETCH_ASSOC);
-        // Vérifie si la variable $result_array est vide
-        if (empty($result_array)) {
+        $userData = $req->fetch(PDO::FETCH_ASSOC);
+        // Vérifie si la variable $userData est vide
+        if (empty($userData)) {
             return null;
-        }
+        }        
         // Renvoie les données de l'utilisateur sélectionné dans la variable $userData
-        $userData = $result_array[0];
         // Création d'un objet de la classe User avec les valeurs contenues dans $userData
         $user = new User($userData);
+        // la propriété $_profile de l’objet user vaut encore une valeur numérique
+        // on crée l’objet correspondant
+        $profile = ProfileManager::getProfileById($user->getProfile());
+        // que l’on réinjecte dans l’objet user
+        $user->setProfile($profile);
 
-        return $user;
+        return $user;    
     }
 
     /**
@@ -97,11 +101,19 @@ class UserManager extends Manager
             // Requête SQL SELECT pour sélectionner un utilisateur selon son id dans la BDD
             $req = $db->prepare('SELECT login, username, password, profile_id FROM user WHERE id = ?');
             $res = $req->execute(array($idUser));
-
             // Récupération des données de l'utilisateur dans la variable $userData
             $userData = $req->fetch(PDO::FETCH_ASSOC);
-            // Instantiation d'un User avec les données contenues dans $userData
+            if (empty($userData)) {
+                return null;
+            }
+            // Renvoie les données de l'utilisateur sélectionné dans la variable $userData
+            // Création d'un objet de la classe User avec les valeurs contenues dans $userData
             $user = new User($userData);
+            // la propriété $_profile de l’objet user vaut encore une valeur numérique
+            // on crée l’objet correspondant
+            $profile = ProfileManager::getProfileById($user->getProfile());
+            // que l’on réinjecte dans l’objet user
+            $user->setProfile($profile);
 
             return $user;
         }

@@ -110,14 +110,8 @@ class User
 	    	$this->_password = $password;
 	    }
 	}
-	public function setProfile_id($profile)
+	public function setProfile($profile)
 	{
-	    $profile = (int) $profile;
-	    
-	    // On vérifie ensuite si ce nombre est bien strictement égal à 1 ou à 2, mais pas les deux en même temps.
-	    if ($profile == 1 XOR $profile == 2)
-	    {
-	    	$this->_profile = $profile;
-	    }
+		$this->_profile = $profile;
 	}
 }

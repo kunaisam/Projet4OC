@@ -69,6 +69,13 @@ class ViewController
 		ob_start();
 		include( __DIR__ . '/../view/frontend/header.html');
 
+		if (in_array('listPostsAdminView', $view)) {
+			include( __DIR__ . '/../view/admin/adminHomeTopBarView.html');
+		}
+		else {
+			include( __DIR__ . '/../view/admin/adminTopBarView.html');
+		}
+
 		foreach ($view as $key => $keyView) 
 		{
 			include( __DIR__ . '/../view/admin/' . $keyView . '.html');

@@ -199,7 +199,7 @@ class Router
                 // Création des instances de chaque article
                 $posts = $postController->articleListPosts();
                 // Affichage de la vue administrateur
-                $ViewController->renderAdmin(['adminView', 'listPostsAdminView'], ['posts' => $posts, 'title' => 'Administration : Blog de Jean Forteroche']);
+                $ViewController->renderAdmin(['listPostsAdminView'], ['posts' => $posts, 'title' => 'Administration : Blog de Jean Forteroche']);
                 break;
 
             /**
@@ -227,7 +227,7 @@ class Router
                     // Création des instances de chaque article
                     $posts = $postController->articleListPosts();
                     // Affichage de la vue administrateur
-                    $ViewController->renderAdmin(['adminView', 'listPostsAdminView'], ['posts' => $posts, 'title' => 'Administration : Blog de Jean Forteroche']);
+                    $ViewController->renderAdmin(['listPostsAdminView'], ['posts' => $posts, 'title' => 'Administration : Blog de Jean Forteroche']);
                 break;
                 }
                 else
@@ -292,7 +292,7 @@ class Router
                 // Création des instances de chaque article
                 $posts = $postController->articleListPosts();
                 // Affichage de la vue administrateur
-                $ViewController->renderAdmin(['adminView', 'listPostsAdminView'], ['posts' => $posts, 'title' => 'Administration : Blog de Jean Forteroche']);
+                $ViewController->renderAdmin(['listPostsAdminView'], ['posts' => $posts, 'title' => 'Administration : Blog de Jean Forteroche']);
 
                 break;
 

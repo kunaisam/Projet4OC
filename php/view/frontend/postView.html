@@ -14,16 +14,18 @@
 		</div>
 	</div>
 	<div class="comments_box">
-		<h4>Commentaires</h4>
+		<h3>Commentaires</h3>
 		<?php
 		foreach($comments as $comment)
 		{
 		?>
-			<p>
-				<strong><?= $comment->getUser()->getUsername() ?></strong> le <?= $comment->getDate() ?> 
-				<a href="?<?= TAG_ACTION ?>=<?= ACTION_REPORTCOMMENT ?>&<?= TAG_IDPOST ?>=<?= $comment->getArticles() ?>&<?= TAG_IDCOMMENT ?>=<?= $comment->getId() ?>">Signaler</a>
-			</p>
-           	<p><?= $comment->getContent() ?></p>
+		<div class="comment_box_report">
+			<div class="comment_box">
+				<div class="comment_box_username"><?= $comment->getUser()->getUsername() ?></div>
+	           	<p class="comment_box_content"><?= $comment->getContent() ?></p>
+		    </div>
+		    <a href="?<?= TAG_ACTION ?>=<?= ACTION_REPORTCOMMENT ?>&<?= TAG_IDPOST ?>=<?= $comment->getArticles() ?>&<?= TAG_IDCOMMENT ?>=<?= $comment->getId() ?>" class="report_link">Signaler</a>
+	    </div>
 	    <?php
 	    }
 	    ?>

@@ -125,7 +125,7 @@ class PostController
 		$commentController = new CommentController();
 		// Création d'objets Comment dans la variable $comments
         $comments = $commentController->getComments($idPost);
-        // Supression de chaque commentaire
+        // Supression de chaque commentaire de l'article
         foreach ($comments as $key => $value) {
         	$commentController->deleteComment($value->getId());
         }

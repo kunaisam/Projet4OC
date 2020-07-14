@@ -1,13 +1,13 @@
 <section>
 	<h2>Modifier un article</h2>
     <form method="post" action="?<?= TAG_ACTION ?>=<?= ACTION_UPDATEPOST ?>&<?= TAG_IDPOST ?>=<?= $post->getId() ?>">
-    	<label  for="title">Titre</label>
-	    <input type="text" name="title" value="<?= $post->getTitle() ?>" class="id_login" />
+    	<label class="tinymce_title" for="title">Titre</label>
+	    <input type="text" name="title" value="<?= $post->getTitle() ?>" class="input_title" />
 	    <br />
-	    <label  for="mytextarea">Contenu</label>
+	    <label class="tinymce_title" for="mytextarea">Contenu</label>
 	    <br />
 	    <textarea name="mytextarea" id="mytextarea"><?= $post->getContent() ?></textarea>
 	    <br />
-		<input type="submit" value="Publier" />
+		<input class="submit_button_admin" type="submit" value="Publier" />
     </form>
 </section>

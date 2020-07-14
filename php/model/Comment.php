@@ -110,6 +110,9 @@ class Comment
 
 	public function setDate($date)
 	{
+		// Transformation du format US de la date en format francophone
+		$date = preg_replace('(([12]\d{3})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))', '$3/$2/$1', $date);
+
 	    if (is_string($date))
 	    {
 	    	$this->_date = $date;

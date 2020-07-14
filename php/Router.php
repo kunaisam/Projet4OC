@@ -65,11 +65,11 @@ class Router
                     // Vérifie si une session est active
                     if (isset($_SESSION['username'])) {
                         // Affiche le post, ses commentaires et si la session est active, affiche la possibilité d'ajouter un commentaire
-                        $ViewController->render(['postView', 'addCommentView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $idPost]);
+                        $ViewController->render(['postView', 'addCommentView'], ['post' => $post, 'comments' => $comments, 'title' => $post->getTitle()]);
                     }
                     else {
                         // Affiche seulement le post et ses commentaires
-                        $ViewController->render(['postView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $idPost]);
+                        $ViewController->render(['postView'], ['post' => $post, 'comments' => $comments, 'title' => $post->getTitle()]);
                     }
                 }
                 else {

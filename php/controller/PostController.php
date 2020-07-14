@@ -121,6 +121,14 @@ class PostController
      */
 	public function deletePost($idPost)
 	{
+		// Instanciation d'un CommentController
+		$commentController = new CommentController();
+		// Création d'objets Comment dans la variable $comments
+        $comments = $commentController->getComments($idPost);
+        // Supression de chaque commentaire
+        foreach ($comments as $key => $value) {
+        	$commentController->deleteComment($value->getId());
+        }
 		// Création d'un objet $postManager
 		$postManager = new PostManager();
 		// Appel de la fonction deletePost() de cet objet avec l'identifiant du post en paramètre

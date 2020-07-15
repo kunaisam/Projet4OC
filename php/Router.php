@@ -95,11 +95,11 @@ class Router
                 // Si le nouveau commentaire ne vaut pas NULL
                 if ($newComment) {
                     // Affiche le post, ses commentaires et affiche la possibilité d'ajouter un commentaire
-                    $ViewController->render(['postView', 'addCommentView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $idPost]);
+                    $ViewController->render(['postView', 'addCommentView'], ['post' => $post, 'comments' => $comments, 'title' => $post->getTitle()]);
                 }
                 else {
                     // Affiche le post, ses commentaires, le message d'échec d'envoi du commentaire et affiche la possibilité d'ajouter un commentaire
-                    $ViewController->render(['postView', 'addCommentFailedView', 'addCommentView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $idPost]);
+                    $ViewController->render(['postView', 'addCommentFailedView', 'addCommentView'], ['post' => $post, 'comments' => $comments, 'title' => $post->getTitle()]);
                 }
                 break;
 
@@ -325,11 +325,11 @@ class Router
                 // Vérifie si une session est active
                 if (isset($_SESSION['username'])) {
                     // Affiche le post, ses commentaires et si la session est active, affiche la possibilité d'ajouter un commentaire. Affiche un message disant que le commentaire a été signalé.
-                    $ViewController->render(['postView', 'reportCommentSuccessView', 'addCommentView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $idPost]);
+                    $ViewController->render(['postView', 'reportCommentSuccessView', 'addCommentView'], ['post' => $post, 'comments' => $comments, 'title' => $post->getTitle()]);
                 }
                 else {
                     // Affiche seulement le post et ses commentaires. Affiche un message disant que le commentaire a été signalé.
-                    $ViewController->render(['postView', 'reportCommentSuccessView'], ['post' => $post, 'comments' => $comments, 'title' => 'Chapitre ' . $idPost]);
+                    $ViewController->render(['postView', 'reportCommentSuccessView'], ['post' => $post, 'comments' => $comments, 'title' => $post->getTitle()]);
                 }
                 break;
 

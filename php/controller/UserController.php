@@ -52,7 +52,7 @@ class UserController
 				'login' => $login,
 	            'username' => $pseudo, 
 	            'password' => $password,
-	            'profile' => $profileId
+	            'profile_id' => $profileId
 			]);
 
 			// Création d'un objet UserManager

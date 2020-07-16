@@ -22,7 +22,7 @@ class Manager
     {
         try
         {
-           $db = new PDO('mysql:host=localhost;dbname=project4;charset=utf8', 'root', ''); 
+           $db = new PDO(DRIVER_PDO . ":host=" . DB_HOST . ";dbname=" . DB_NAME . ";port=" . DB_PORT . ";" . DB_OPTIONS, DB_USER, DB_PASSWORD);
         }
         catch(Exception $e)
         {

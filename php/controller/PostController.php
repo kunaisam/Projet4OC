@@ -15,6 +15,18 @@
 class PostController
 {
 	/**
+     * Méthode permettant de vérifier si un post a bien été sélectionné
+     *
+     */
+	public function issetIdPost()
+	{
+		// Opérateur ternaire : vérifie si une valeur TAG_IDPOST est envoyée par l'utilisateur, si oui, on attribue cette valeur à $idPost
+        $idPost = isset($_POST[TAG_IDPOST]) ? $_POST[TAG_IDPOST] : (isset($_GET[TAG_IDPOST]) ? $_GET[TAG_IDPOST] : null);
+
+	    return $idPost;
+	}
+
+	/**
      * Méthode permettant d'appeler les trois derniers articles de blog à partir du PostManager et d'envoyer leurs valeurs au routeur
      *
      */
@@ -60,11 +72,12 @@ class PostController
 	/**
 	 * Méthode permettant de créer un utilisateur via la classe User
 	 *
-	 * @param String $title contient la valeur entrée par l'administrateur dans la partie Titre
-	 * @param String $myTextArea contient la valeur entrée par l'utilisateur dans la partie Contenu (interface Wysiwyg)
 	 */
-	public function createNewPost($title, $myTextArea)
+	public function createNewPost()
 	{
+		// Récupération de champs du formulaire dans les variables $title et $myTextArea
+        $title = $_POST['title'];
+        $myTextArea = $_POST['mytextarea'];
 		// Vérifie si le formulaire de création d'article a été correctement rempli
 		if (!empty($title) && !empty($myTextArea)) {
 			// Création d'une instance UserManager
@@ -95,11 +108,12 @@ class PostController
      * Méthode permettant de modifier des articles
      *
      * @param Integer $idPost contient l'identifiant de l'article sélectionné
-     * @param String $title contient la valeur entrée par l'administrateur dans la partie Titre
-	 * @param String $myTextArea contient la valeur entrée par l'utilisateur dans la partie Contenu (interface Wysiwyg)
      */
-	public function updatePost($idPost, $title, $myTextArea)
+	public function updatePost($idPost)
 	{
+		// Récupération de champs du formulaire dans les variables $title et $myTextArea
+        $title = $_POST['title'];
+        $myTextArea = $_POST['mytextarea'];
 		// Vérifie si le formulaire de modifiaction d'article a été correctement rempli
 		if (!empty($title) && !empty($myTextArea)) {
 			// Création d'un objet $postManager

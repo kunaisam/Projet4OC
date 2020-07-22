@@ -23,21 +23,22 @@ class Router
      */
     public function load()
     {
-        // Opérateur ternaire : vérifie si une valeur TAG_ACTION existe, si oui, on attribue cette valeur à $action
-        $action = isset($_POST[TAG_ACTION]) ? $_POST[TAG_ACTION] : (isset($_GET[TAG_ACTION]) ? $_GET[TAG_ACTION] : null);
-
-        // Instanciation de tous les contrôleurs
+        // Instanciation du contrôleur principal
         $controller = new Controller();
+        // Opérateur ternaire : vérifie si une valeur TAG_ACTION existe, si oui, on attribue cette valeur à $action
+        $action = $controller->issetAction();
+        // Instanciation de tous les autres contrôleurs
         $ViewController = new ViewController();
         $formController = new FormController();
         $userController = new UserController();
         $postController = new PostController();
         $commentController = new CommentController();
         // Démarrage d'une session
-        session_start();
+        $sessionStart = $controller->sessionStart();
 
         // Switch permettant de déterminer l'action entreprise par le visiteur
         switch ($action) {
+
             /**
              * Action enclenchée lorsqu'on clique sur la section Articles
              *
@@ -55,7 +56,7 @@ class Router
              */
             case ACTION_POST :
                 // Opérateur ternaire : vérifie si une valeur TAG_IDPOST est envoyée par l'utilisateur, si oui, on attribue cette valeur à $idPost
-                $idPost = isset($_POST[TAG_IDPOST]) ? $_POST[TAG_IDPOST] : (isset($_GET[TAG_IDPOST]) ? $_GET[TAG_IDPOST] : null);
+                $idPost = $postController->issetIdPost();
                 // Vérifie si $idPost contient une valeur
                 if (!empty($idPost)) {
                     // Création de l'objet Post dans la variable $post
@@ -63,7 +64,8 @@ class Router
                     // Création d'objets Comment dans la variable $comments
                     $comments = $commentController->getComments($idPost);
                     // Vérifie si une session est active
-                    if (isset($_SESSION['username'])) {
+                    $sessionUsername = $controller->issetSessionUsername();
+                    if ($sessionUsername) {
                         // Affiche le post, ses commentaires et si la session est active, affiche la possibilité d'ajouter un commentaire
                         $ViewController->render(['postView', 'addCommentView'], ['post' => $post, 'comments' => $comments, 'title' => $post->getTitle()]);
                     }
@@ -83,11 +85,9 @@ class Router
              */
             case ACTION_ADDCOMMENT:
                 // Opérateur ternaire : vérifie si une valeur TAG_IDPOST est envoyée par l'utilisateur, si oui, on attribue cette valeur à $idPost
-                $idPost = isset($_POST[TAG_IDPOST]) ? $_POST[TAG_IDPOST] : (isset($_GET[TAG_IDPOST]) ? $_GET[TAG_IDPOST] : null);
-                // Récupère le commentaire posté
-                $comment = $_POST['comment'];
+                $idPost = $postController->issetIdPost();
                 // Envoi du commentaire au CommentController
-                $newComment = $commentController->addComment($idPost, $comment);
+                $newComment = $commentController->addComment($idPost);
                 // Création de l'objet Post dans la variable $post
                 $post = $postController->post($idPost);
                 // Création d'objets Comment dans la variable $comments
@@ -117,13 +117,8 @@ class Router
              *
              */
             case ACTION_REGISTRATIONSUBMIT:
-                // Récupération de champs du formulaire dans les variables $login, $pseudo, $password et $passwordConfirmation
-                $login = $_POST['login'];
-                $pseudo = $_POST['pseudo'];
-                $password = $_POST['pass'];
-                $passwordConfirmation = $_POST['pass2'];
                 // Création d'un nouvel utilisateur avec les données des variables
-                $newUser = $userController->createNewUser($login, $pseudo, $password, $passwordConfirmation);
+                $newUser = $userController->createNewUser();
                 // Si $newUser n'est pas NULL, donc si les champs du formulaire ont été remplis correctement
                 if ($newUser) 
                 {
@@ -151,20 +146,17 @@ class Router
              *
              */
             case ACTION_LOGINSUBMIT:
-                // Récupération de champs du formulaire dans les variables $login et $password
-                $login = $_POST['login'];
-                $password = $_POST['pass'];
                 // Création de l'objet User dans la variable $user
-                $user = $userController->getUser($login, $password);
+                $user = $userController->getUser();
                 // Vérifie si la variable $user contient quelque chose
                 if ($user) 
                 {
                     // Création d'une variable de session contenant le nom de l'utilisateur
-                    $_SESSION['username'] = $user->getUsername();
+                    $sessionUsername = $controller->returnSessionUsername($user);
                     // Création d'une variable de session contenant l'id de l'utilisateur
-                    $_SESSION['userId'] = $user->getId();
+                    $sessionUserId = $controller->returnSessionUserId($user);
                     // Création d'une variable de session contenant l'id du profil de l'utilisateur
-                    $_SESSION['profileId'] = $user->getProfile();
+                    $sessionProfileId = $controller->returnSessionProfileId($user);
                     // Récupération du contenu des articles de blog dans la variable $posts pour pouvoir les afficher sur la page d'accueil
                     $posts = $postController->indexListPosts();
                     // Affichage des vues une fois l'utilisateur/administrateur connecté
@@ -183,8 +175,7 @@ class Router
              */
             case ACTION_LOGOUT:
                 // Destruction de la session
-                $_SESSION = array();
-                session_destroy();
+                $sessionDestroy = $controller->sessionDestroy();
                 // Récupération du contenu des articles de blog dans la variable $posts pour pouvoir les afficher sur la page d'accueil
                 $posts = $postController->indexListPosts();
                 // Affichage des vues après déconnexion
@@ -216,11 +207,8 @@ class Router
              *
              */
             case ACTION_CREATENEWPOST:
-                // Récupération de champs du formulaire dans les variables $title et $myTextArea
-                $title = $_POST['title'];
-                $myTextArea = $_POST['mytextarea'];
                 // Création d'un nouvel article avec les données des variables
-                $newPost = $postController->createNewPost($title, $myTextArea);
+                $newPost = $postController->createNewPost();
                 // Si $newPost n'est pas NULL, donc si les champs du formulaire ont été remplis correctement
                 if ($newPost) 
                 {
@@ -243,7 +231,7 @@ class Router
              */
             case ACTION_EDITPOST:
                 // Opérateur ternaire : vérifie si une valeur TAG_IDPOST est envoyée par l'utilisateur, si oui, on attribue cette valeur à $idPost
-                $idPost = isset($_POST[TAG_IDPOST]) ? $_POST[TAG_IDPOST] : (isset($_GET[TAG_IDPOST]) ? $_GET[TAG_IDPOST] : null);
+                $idPost = $postController->issetIdPost();
                 // Sélection de l'article à modifier
                 $post = $postController->post($idPost);
                 // Affichage de la vue de modification d'article administrateur
@@ -256,12 +244,9 @@ class Router
              */
             case ACTION_UPDATEPOST:
                 // Opérateur ternaire : vérifie si une valeur TAG_IDPOST est envoyée par l'utilisateur, si oui, on attribue cette valeur à $idPost
-                $idPost = isset($_POST[TAG_IDPOST]) ? $_POST[TAG_IDPOST] : (isset($_GET[TAG_IDPOST]) ? $_GET[TAG_IDPOST] : null);
-                // Récupération de champs du formulaire dans les variables $title et $myTextArea
-                $title = $_POST['title'];
-                $myTextArea = $_POST['mytextarea'];
+                $idPost = $postController->issetIdPost();
                 // Modification d'un article
-                $updatePost = $postController->updatePost($idPost, $title, $myTextArea);
+                $updatePost = $postController->updatePost($idPost);
                 // Si $updatePost n'est pas NULL, donc si les champs du formulaire ont été remplis correctement
                 if ($updatePost) 
                 {
@@ -286,7 +271,7 @@ class Router
              */
             case ACTION_DELETEPOST:
                 // Opérateur ternaire : vérifie si une valeur TAG_IDPOST est envoyée par l'utilisateur, si oui, on attribue cette valeur à $idPost
-                $idPost = isset($_POST[TAG_IDPOST]) ? $_POST[TAG_IDPOST] : (isset($_GET[TAG_IDPOST]) ? $_GET[TAG_IDPOST] : null);
+                $idPost = $postController->issetIdPost();
                 // Supression d'un article
                 $post = $postController->deletePost($idPost);
                 // Création des instances de chaque article
@@ -313,17 +298,18 @@ class Router
              */
             case ACTION_REPORTCOMMENT:
                 // Opérateur ternaire : vérifie si une valeur TAG_IDCOMMENT est envoyée par l'utilisateur, si oui, on attribue cette valeur à $id
-                $id = isset($_POST[TAG_IDCOMMENT]) ? $_POST[TAG_IDCOMMENT] : (isset($_GET[TAG_IDCOMMENT]) ? $_GET[TAG_IDCOMMENT] : null);
+                $id = $commentController->issetIdComment();
                 // Signalement d'un commentaire
                 $comments = $commentController->reportComment($id);
                 // Opérateur ternaire : vérifie si une valeur TAG_IDPOST est envoyée par l'utilisateur, si oui, on attribue cette valeur à $idPost
-                $idPost = isset($_POST[TAG_IDPOST]) ? $_POST[TAG_IDPOST] : (isset($_GET[TAG_IDPOST]) ? $_GET[TAG_IDPOST] : null);
+                $idPost = $postController->issetIdPost();
                 // Création de l'objet Post dans la variable $post
                 $post = $postController->post($idPost);
                 // Création d'objets Comment dans la variable $comments
                 $comments = $commentController->getComments($idPost);
                 // Vérifie si une session est active
-                if (isset($_SESSION['username'])) {
+                $sessionUsername = $controller->issetSessionUsername();
+                if ($sessionUsername) {
                     // Affiche le post, ses commentaires et si la session est active, affiche la possibilité d'ajouter un commentaire. Affiche un message disant que le commentaire a été signalé.
                     $ViewController->render(['postView', 'reportCommentSuccessView', 'addCommentView'], ['post' => $post, 'comments' => $comments, 'title' => $post->getTitle()]);
                 }
@@ -339,7 +325,7 @@ class Router
              */
             case ACTION_NORMALISECOMMENT:
                 // Opérateur ternaire : vérifie si une valeur TAG_IDCOMMENT est envoyée par l'utilisateur, si oui, on attribue cette valeur à $id
-                $id = isset($_POST[TAG_IDCOMMENT]) ? $_POST[TAG_IDCOMMENT] : (isset($_GET[TAG_IDCOMMENT]) ? $_GET[TAG_IDCOMMENT] : null);
+                $id = $commentController->issetIdComment();
                 // Normalisation d'un commentaire
                 $comment = $commentController->normaliseComment($id);
                 // Création des instances de chaque commentaire signalé
@@ -355,7 +341,7 @@ class Router
              */
             case ACTION_DELETECOMMENT:
                 // Opérateur ternaire : vérifie si une valeur TAG_IDCOMMENT est envoyée par l'utilisateur, si oui, on attribue cette valeur à $id
-                $id = isset($_POST[TAG_IDCOMMENT]) ? $_POST[TAG_IDCOMMENT] : (isset($_GET[TAG_IDCOMMENT]) ? $_GET[TAG_IDCOMMENT] : null);
+                $id = $commentController->issetIdComment();
                 // Supression d'un commentaire
                 $comment = $commentController->deleteComment($id);
                 // Création des instances de chaque commentaire signalé

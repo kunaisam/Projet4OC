@@ -61,27 +61,32 @@ class ViewController
 	 */
 	public function renderAdmin($view, $params)
 	{
-		foreach($params as $var => $val)
-		{
-			$$var = $val;
-		}
+		if (isset($_SESSION['profileId']) && $_SESSION['profileId'] == 1) {
+			foreach($params as $var => $val)
+			{
+				$$var = $val;
+			}
 
-		ob_start();
-		include( __DIR__ . '/../view/frontend/header.html');
+			ob_start();
+			include( __DIR__ . '/../view/frontend/header.html');
 
-		if (in_array('listPostsAdminView', $view)) {
-			include( __DIR__ . '/../view/admin/adminHomeTopBarView.html');
+			if (in_array('listPostsAdminView', $view)) {
+				include( __DIR__ . '/../view/admin/adminHomeTopBarView.html');
+			}
+			else {
+				include( __DIR__ . '/../view/admin/adminTopBarView.html');
+			}
+
+			foreach ($view as $key => $keyView) 
+			{
+				include( __DIR__ . '/../view/admin/' . $keyView . '.html');
+			}
+
+			include( __DIR__ . '/../view/frontend/footer.html');
+			die(ob_get_clean());
 		}
 		else {
-			include( __DIR__ . '/../view/admin/adminTopBarView.html');
+			die("Connexion impossible : administrateur non-reconnu");
 		}
-
-		foreach ($view as $key => $keyView) 
-		{
-			include( __DIR__ . '/../view/admin/' . $keyView . '.html');
-		}
-
-		include( __DIR__ . '/../view/frontend/footer.html');
-		die(ob_get_clean());
 	}
 }

@@ -15,6 +15,18 @@
 class CommentController
 {
 	/**
+     * Méthode permettant de vérifier si un commentaire a bien été sélectionné
+     *
+     */
+	public function issetIdComment()
+	{
+		// Opérateur ternaire : vérifie si une valeur TAG_IDCOMMENT est envoyée par l'utilisateur, si oui, on attribue cette valeur à $idComment
+        $idComment = isset($_POST[TAG_IDCOMMENT]) ? $_POST[TAG_IDCOMMENT] : (isset($_GET[TAG_IDCOMMENT]) ? $_GET[TAG_IDCOMMENT] : null);
+
+	    return $idComment;
+	}
+
+	/**
      * Méthode permettant d'appeler les commentaires sélectionnés à partir du CommentManager et d'envoyer ses valeurs au routeur
      *
      * @param Integer $id contient l'identifiant du post sélectionné
@@ -92,10 +104,11 @@ class CommentController
      * Méthode permettant d'ajouter un commentaire à partir du CommentManager
      *
      * @param Integer $postId contient l'identifiant du post sélectionné
-     * @param String $comment contient le commentaire envoyé par l'utilisateur
      */
-	public function addComment($postId, $comment)
+	public function addComment($postId)
 	{
+		// Récupère le commentaire posté
+        $comment = $_POST['comment'];
 		// Vérifie si les champs ont été correctement remplis
 		if (!empty($postId) && !empty($comment)) {
 			// Création d'un objet Comment avec ses données dans un tableau

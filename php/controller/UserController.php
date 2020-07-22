@@ -17,11 +17,12 @@ class UserController
 	/**
 	 * Méthode permettant d'appeler un utilisateur via la classe UserManager
 	 *
-	 * @param String $login contient la valeur entrée par l'utilisateur dans la partie Identifiant du fomulaire de connexion
-     * @param String $password contient la valeur entrée par l'utilisateur dans la partie Mot de passe du fomulaire de connexion
 	 */
-	public function getUser($login, $password)
+	public function getUser()
 	{
+		// Récupération de champs du formulaire dans les variables $login et $password
+        $login = $_POST['login'];
+        $password = $_POST['pass'];
 		// Création de l'objet UserManager dans la variable $userManager
 		$userManager = new UserManager();
 		// Appel de l'utilisateur via la méthode getUser de $userManager dans la variable $user
@@ -33,12 +34,14 @@ class UserController
 	/**
 	 * Méthode permettant de créer un utilisateur via la classe User
 	 *
-	 * @param String $login contient la valeur entrée par l'utilisateur dans la partie Identifiant du fomulaire d'inscription
-	 * @param String $pseudo contient la valeur entrée par l'utilisateur dans la partie Pseudonyme du fomulaire d'inscription
-     * @param String $password contient la valeur entrée par l'utilisateur dans la partie Mot de passe du fomulaire d'inscription
 	 */
-	public function createNewUser($login, $pseudo, $password, $passwordConfirmation)
+	public function createNewUser()
 	{
+        // Récupération de champs du formulaire dans les variables $login, $pseudo, $password et $passwordConfirmation
+        $login = $_POST['login'];
+        $pseudo = $_POST['pseudo'];
+        $password = $_POST['pass'];
+        $passwordConfirmation = $_POST['pass2'];
 		// Vérifie si le formulaire d'inscription a été correctement rempli
 		if (strcmp($password, $passwordConfirmation) == 0 && !empty($login) && !empty($pseudo) && !empty($password) && !empty($passwordConfirmation)) {
 			// Création d'une instance ProfileManager

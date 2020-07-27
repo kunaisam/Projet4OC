@@ -121,6 +121,16 @@ class Controller
         }
 	}
 
+	public function authorizationAdmin()
+	{
+		if (isset($_SESSION['profileId']) && $_SESSION['profileId'] == 1) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
     /**
      * Méthode enclenchée lorsqu'on clique sur la section Articles
      *
@@ -278,10 +288,15 @@ class Controller
      */
 	public function actionLoginAdmin()
 	{
-        // Création des instances de chaque article
-        $posts = $this->_postController->articleListPosts();
-        // Affichage de la vue administrateur
-        $this->_viewController->renderAdmin(['listPostsAdminView'], ['posts' => $posts, 'title' => 'Administration : Blog de Jean Forteroche']);
+		if ($this->authorizationAdmin()) {
+	        // Création des instances de chaque article
+	        $posts = $this->_postController->articleListPosts();
+	        // Affichage de la vue administrateur
+	        $this->_viewController->renderAdmin(['listPostsAdminView'], ['posts' => $posts, 'title' => 'Administration : Blog de Jean Forteroche']);
+		}
+		else {
+			die("Connexion impossible : administrateur non-reconnu");
+		}
 	}
 
     /**
@@ -290,8 +305,13 @@ class Controller
      */
 	public function actionAddPost()
 	{
-        // Affichage de la vue de création d'article administrateur
-        $this->_viewController->renderAdmin(['addPostAdminView'], ['title' => 'Nouvel article']);
+		if ($this->authorizationAdmin()) {
+	        // Affichage de la vue de création d'article administrateur
+	        $this->_viewController->renderAdmin(['addPostAdminView'], ['title' => 'Nouvel article']);
+		}
+		else {
+			die("Connexion impossible : administrateur non-reconnu");
+		}
 	}
 
     /**
@@ -300,21 +320,26 @@ class Controller
      */
 	public function actionCreateNewPost()
 	{
-        // Création d'un nouvel article avec les données des variables
-        $newPost = $this->_postController->createNewPost();
-        // Si $newPost n'est pas NULL, donc si les champs du formulaire ont été remplis correctement
-        if ($newPost) 
-        {
-            // Création des instances de chaque article
-            $posts = $this->_postController->articleListPosts();
-            // Affichage de la vue administrateur
-            $this->_viewController->renderAdmin(['listPostsAdminView'], ['posts' => $posts, 'title' => 'Administration : Blog de Jean Forteroche']);
-        }
-        else
-        {
-            // Affichage de la vue de création d'article administrateur
-            $this->_viewController->renderAdmin(['addPostAdminView', 'addPostFailureView'], ['title' => 'Nouvel article']);
-        }
+		if ($this->authorizationAdmin()) {
+	        // Création d'un nouvel article avec les données des variables
+	        $newPost = $this->_postController->createNewPost();
+	        // Si $newPost n'est pas NULL, donc si les champs du formulaire ont été remplis correctement
+	        if ($newPost) 
+	        {
+	            // Création des instances de chaque article
+	            $posts = $this->_postController->articleListPosts();
+	            // Affichage de la vue administrateur
+	            $this->_viewController->renderAdmin(['listPostsAdminView'], ['posts' => $posts, 'title' => 'Administration : Blog de Jean Forteroche']);
+	        }
+	        else
+	        {
+	            // Affichage de la vue de création d'article administrateur
+	            $this->_viewController->renderAdmin(['addPostAdminView', 'addPostFailureView'], ['title' => 'Nouvel article']);
+	        }
+		}
+		else {
+			die("Connexion impossible : administrateur non-reconnu");
+		}
 	}
 
     /**
@@ -323,12 +348,17 @@ class Controller
      */
 	public function actionEditPost()
 	{
-        // Opérateur ternaire : vérifie si une valeur TAG_IDPOST est envoyée par l'utilisateur, si oui, on attribue cette valeur à $idPost
-        $idPost = $this->_postController->issetIdPost();
-        // Sélection de l'article à modifier
-        $post = $this->_postController->post($idPost);
-        // Affichage de la vue de modification d'article administrateur
-        $this->_viewController->renderAdmin(['editPostAdminView'], ['post' => $post, 'title' => 'Modifier un article']);
+		if ($this->authorizationAdmin()) {
+	        // Opérateur ternaire : vérifie si une valeur TAG_IDPOST est envoyée par l'utilisateur, si oui, on attribue cette valeur à $idPost
+	        $idPost = $this->_postController->issetIdPost();
+	        // Sélection de l'article à modifier
+	        $post = $this->_postController->post($idPost);
+	        // Affichage de la vue de modification d'article administrateur
+	        $this->_viewController->renderAdmin(['editPostAdminView'], ['post' => $post, 'title' => 'Modifier un article']);
+		}
+		else {
+			die("Connexion impossible : administrateur non-reconnu");
+		}
 	}
 
     /**
@@ -337,25 +367,30 @@ class Controller
      */
 	public function actionUpdatePost()
 	{
-        // Opérateur ternaire : vérifie si une valeur TAG_IDPOST est envoyée par l'utilisateur, si oui, on attribue cette valeur à $idPost
-        $idPost = $this->_postController->issetIdPost();
-        // Modification d'un article
-        $updatePost = $this->_postController->updatePost($idPost);
-        // Si $updatePost n'est pas NULL, donc si les champs du formulaire ont été remplis correctement
-        if ($updatePost) 
-        {
-            // Sélection de l'article à modifier
-            $post = $this->_postController->post($idPost);
-            // Affichage de la vue de modification d'article administrateur
-            $this->_viewController->renderAdmin(['editPostAdminView', 'editPostSuccessView'], ['post' => $post, 'title' => 'Modifier un article']);
-        }
-        else
-        {
-            // Sélection de l'article à modifier
-            $post = $this->_postController->post($idPost);
-            // Affichage de la vue de modification d'article administrateur
-            $this->_viewController->renderAdmin(['editPostAdminView', 'addPostFailureView'], ['post' => $post, 'title' => 'Modifier un article']);
-        }
+		if ($this->authorizationAdmin()) {
+	        // Opérateur ternaire : vérifie si une valeur TAG_IDPOST est envoyée par l'utilisateur, si oui, on attribue cette valeur à $idPost
+	        $idPost = $this->_postController->issetIdPost();
+	        // Modification d'un article
+	        $updatePost = $this->_postController->updatePost($idPost);
+	        // Si $updatePost n'est pas NULL, donc si les champs du formulaire ont été remplis correctement
+	        if ($updatePost) 
+	        {
+	            // Sélection de l'article à modifier
+	            $post = $this->_postController->post($idPost);
+	            // Affichage de la vue de modification d'article administrateur
+	            $this->_viewController->renderAdmin(['editPostAdminView', 'editPostSuccessView'], ['post' => $post, 'title' => 'Modifier un article']);
+	        }
+	        else
+	        {
+	            // Sélection de l'article à modifier
+	            $post = $this->_postController->post($idPost);
+	            // Affichage de la vue de modification d'article administrateur
+	            $this->_viewController->renderAdmin(['editPostAdminView', 'addPostFailureView'], ['post' => $post, 'title' => 'Modifier un article']);
+	        }
+		}
+		else {
+			die("Connexion impossible : administrateur non-reconnu");
+		}
 	}
 
     /**
@@ -364,14 +399,19 @@ class Controller
      */
 	public function actionDeletePost()
 	{
-        // Opérateur ternaire : vérifie si une valeur TAG_IDPOST est envoyée par l'utilisateur, si oui, on attribue cette valeur à $idPost
-        $idPost = $this->_postController->issetIdPost();
-        // Supression d'un article
-        $post = $this->_postController->deletePost($idPost);
-        // Création des instances de chaque article
-        $posts = $this->_postController->articleListPosts();
-        // Affichage de la vue administrateur
-        $this->_viewController->renderAdmin(['listPostsAdminView'], ['posts' => $posts, 'title' => 'Administration : Blog de Jean Forteroche']);
+		if ($this->authorizationAdmin()) {
+	        // Opérateur ternaire : vérifie si une valeur TAG_IDPOST est envoyée par l'utilisateur, si oui, on attribue cette valeur à $idPost
+	        $idPost = $this->_postController->issetIdPost();
+	        // Supression d'un article
+	        $post = $this->_postController->deletePost($idPost);
+	        // Création des instances de chaque article
+	        $posts = $this->_postController->articleListPosts();
+	        // Affichage de la vue administrateur
+	        $this->_viewController->renderAdmin(['listPostsAdminView'], ['posts' => $posts, 'title' => 'Administration : Blog de Jean Forteroche']);
+		}
+		else {
+			die("Connexion impossible : administrateur non-reconnu");
+		}
 	}
 
     /**
@@ -380,10 +420,15 @@ class Controller
      */
 	public function actionCommentsAdmin()
 	{
-        // Création des instances de chaque commentaire signalé
-        $comments = $this->_commentController->getReportedComments();
-        // Affichage de la vue administrateur de modération des commentaires
-        $this->_viewController->renderAdmin(['reportedCommentsAdminView'], ['comments' => $comments, 'title' => 'Commentaires Signalés']);
+		if ($this->authorizationAdmin()) {
+	        // Création des instances de chaque commentaire signalé
+	        $comments = $this->_commentController->getReportedComments();
+	        // Affichage de la vue administrateur de modération des commentaires
+	        $this->_viewController->renderAdmin(['reportedCommentsAdminView'], ['comments' => $comments, 'title' => 'Commentaires Signalés']);
+		}
+		else {
+			die("Connexion impossible : administrateur non-reconnu");
+		}
 	}
 
     /**
@@ -420,14 +465,19 @@ class Controller
      */
 	public function actionNormaliseComment()
 	{
-        // Opérateur ternaire : vérifie si une valeur TAG_IDCOMMENT est envoyée par l'utilisateur, si oui, on attribue cette valeur à $id
-        $id = $this->_commentController->issetIdComment();
-        // Normalisation d'un commentaire
-        $comment = $this->_commentController->normaliseComment($id);
-        // Création des instances de chaque commentaire signalé
-        $comments = $this->_commentController->getReportedComments();
-        // Affichage de la vue administrateur de modération des commentaires
-        $this->_viewController->renderAdmin(['reportedCommentsAdminView'], ['comments' => $comments, 'title' => 'Commentaires Signalés']);
+		if ($this->authorizationAdmin()) {
+	        // Opérateur ternaire : vérifie si une valeur TAG_IDCOMMENT est envoyée par l'utilisateur, si oui, on attribue cette valeur à $id
+	        $id = $this->_commentController->issetIdComment();
+	        // Normalisation d'un commentaire
+	        $comment = $this->_commentController->normaliseComment($id);
+	        // Création des instances de chaque commentaire signalé
+	        $comments = $this->_commentController->getReportedComments();
+	        // Affichage de la vue administrateur de modération des commentaires
+	        $this->_viewController->renderAdmin(['reportedCommentsAdminView'], ['comments' => $comments, 'title' => 'Commentaires Signalés']);
+		}
+		else {
+			die("Connexion impossible : administrateur non-reconnu");
+		}
 	}
 
     /**
@@ -436,14 +486,19 @@ class Controller
      */
 	public function actionDeleteComment()
 	{
-        // Opérateur ternaire : vérifie si une valeur TAG_IDCOMMENT est envoyée par l'utilisateur, si oui, on attribue cette valeur à $id
-        $id = $this->_commentController->issetIdComment();
-        // Supression d'un commentaire
-        $comment = $this->_commentController->deleteComment($id);
-        // Création des instances de chaque commentaire signalé
-        $comments = $this->_commentController->getReportedComments();
-        // Affichage de la vue administrateur de modération des commentaires
-        $this->_viewController->renderAdmin(['reportedCommentsAdminView'], ['comments' => $comments, 'title' => 'Commentaires Signalés']);
+		if ($this->authorizationAdmin()) {
+	        // Opérateur ternaire : vérifie si une valeur TAG_IDCOMMENT est envoyée par l'utilisateur, si oui, on attribue cette valeur à $id
+	        $id = $this->_commentController->issetIdComment();
+	        // Supression d'un commentaire
+	        $comment = $this->_commentController->deleteComment($id);
+	        // Création des instances de chaque commentaire signalé
+	        $comments = $this->_commentController->getReportedComments();
+	        // Affichage de la vue administrateur de modération des commentaires
+	        $this->_viewController->renderAdmin(['reportedCommentsAdminView'], ['comments' => $comments, 'title' => 'Commentaires Signalés']);
+		}
+		else {
+			die("Connexion impossible : administrateur non-reconnu");
+		}
 	}
 
     /**
